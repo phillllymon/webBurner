@@ -1,0 +1,21 @@
+.analyse-row {
+    height: 100px;
+    width: 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.col {
+    width: 1px;
+    background-color: black;
+}
+
+#vertical {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 2px;
+    height: 100%;
+    background-color: green;
+}

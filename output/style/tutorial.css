@@ -1,0 +1,224 @@
+.close-tutorial {
+    position: fixed;
+    top: 5vw;
+    left: 5vw;
+    color: gray;
+    font-size: 2vh;
+    font-family: sans-serif;
+    text-shadow: 0px 0px 1px lightgray;
+}
+
+.tutorial-step {
+    position: fixed;
+    background-color: lightgray;
+    box-shadow: 0px 0px 5px darkgray;
+    border-radius: 2.5vh;
+    color: rgb(90, 90, 90);
+    font-size: 2vh;
+    padding: 2vh;
+    font-family: sans-serif;
+    opacity: 0.9;
+    width: 50vw;
+    z-index: 2;
+}
+
+.tutorial-button {
+    background-color: blue;
+    padding: 1vh;
+    font-size: 2.5vh;
+    font-family: sans-serif;
+    color: lightblue;
+    border-radius: 1vh;
+    width: 25vw;
+    text-align: center;
+}
+
+.tutorial-arrow-right {
+    height: 0vh;
+    width: 0vh;
+    border-left: 5vh solid blue;
+    border-top: 1.75vh solid transparent;
+    border-bottom: 1.75vh solid transparent;
+}
+
+.tutorial-arrow-left {
+    height: 0vh;
+    width: 0vh;
+    border-right: 5vh solid blue;
+    border-top: 1.75vh solid transparent;
+    border-bottom: 1.75vh solid transparent;
+}
+
+.tutorial-button-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.tap-smudge {
+    position: fixed;
+    left: 50%;
+    top: 75%;
+    transform: translate(-50%, 0%);
+    height: 20vh;
+    width: 30vw;
+    border-radius: 50%;
+    background-color: gray;
+    opacity: 0.4;
+    animation-name: pulse;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+
+.tutorial-arrow {
+    position: fixed;
+    width: 8vw;
+    height: 12vw;
+    z-index: 20;
+    top: 5%;
+    left: 40%;
+    animation-name: pulse;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+.pulse {
+    animation-name: pulse;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+@keyframes pulse {
+    0% { opacity: 0.3 }
+    50% { opacity: 1 }
+    100% { opacity: 0.3 }
+}
+.tutorial-arrow-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.tutorial-arrow-shaft {
+    position: absolute;
+    width: 4vw;
+    height: 8vw;
+    top: 4vw;
+    left: 2vw;
+    background-color: blue;
+    box-shadow: 0px 0px 5px darkgray;
+}
+.tutorial-arrow-point-container {
+    position: absolute;
+    width: 8vw;
+    height: 4vw;
+    top: 0vw;
+    left: 0vw;
+    overflow: hidden;
+}
+.tutorial-arrow-point-inner {
+    position: absolute;
+    width: 8vw;
+    height: 8vw;
+    top: 1.64vw;
+    left: 0vw;
+    background-color: blue;
+    transform: rotate(45deg);
+    box-shadow: 0px 0px 5px darkgray;
+}
+
+#calibrator {
+    align-items: center;
+}
+.calibrate-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.calibrate-button {
+    width: 5vh;
+    height: 5vh;
+    border-radius: 1vh;
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#slower-arrow {
+    width: 2vh;
+    height: 2vh;
+    border-left: 0.75vh solid darkgray;
+    border-top: 0.75vh solid darkgray;
+    transform: rotate(-45deg) translate(15%, 15%);
+}
+#faster-arrow {
+    width: 2vh;
+    height: 2vh;
+    border-bottom: 0.75vh solid darkgray;
+    border-right: 0.75vh solid darkgray;
+    transform: rotate(-45deg) translate(-15%, -15%);
+}
+#manual-delay-display {
+    font-size: 3vh;
+    width: 24vw;
+    text-align: center;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#calibrate-curtain {
+    position: fixed;
+    left: 0vw;
+    top: 0vh;
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    opacity: 50%;
+    z-index: 9;
+}
+
+#flashy-thing-container {
+    position: relative;
+    width: 200%;
+    height: 15vh;
+    /* background-color: blue; */
+    margin-top: 2vh;
+    transform: translate(-25%, 0%);
+}
+
+#flashy-stick-upper {
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    height: 30%;
+    transform: translate(-50%, 0%);
+}
+
+#flashy-stick-middle {
+    position: absolute;
+    top: 30%;
+    height: 40%;
+    transform: translate(-50%, 0%);
+}
+
+#flashy-stick-lower {
+    position: absolute;
+    left: 50%;
+    top: 70%;
+    height: 30%;
+    transform: translate(-50%, 0%);
+}
+
+.calibration-stick {
+    width: 3vw;
+    background-color: rgb(0, 150, 0);
+    border-right: 0.5vw solid rgb(0, 107, 0);
+    border-left: 0.5vw solid rgb(0, 107, 0);
+}
+
+.flashy-stick-active {
+    background-color: rgb(0, 235, 0);
+    box-shadow: -2vw 1.5vw 8vw rgb(0, 235, 0), 2vw 1.5vw 8vw rgb(0, 235, 0);
+}

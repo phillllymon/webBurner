@@ -1,0 +1,97 @@
+#background-left {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    top: 0px;
+}
+#background-right {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    top: 0px;
+}
+
+#fog-top-left {
+    position: absolute;
+    height: 7vmin;
+    width: 50%;
+    top: 0px;
+    /* background-color: red; */
+    /* -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+    mask-image: linear-gradient (rgba(0, 0, 0, 1), rgba(0, 0, 0, 1)); */
+}
+#fog-top-right {
+    position: absolute;
+    height: 7vmin;
+    width: 50%;
+    top: 0px;
+    /* -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+    mask-image: linear-gradient (rgba(0, 0, 0, 1), rgba(0, 0, 0, 1)); */
+}
+
+#fog-middle-left {
+    position: absolute;
+    top: 7vmin;
+    height: 2vmin;
+    width: 50%;
+    background-color: blue;
+    -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.9));
+    mask-image: linear-gradient (rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.9));
+}
+#fog-middle-right {
+    position: absolute;
+    top: 7vmin;
+    height: 2vmin;
+    width: 50%;
+    -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.9));
+    mask-image: linear-gradient (rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.9));
+}
+
+#fog-gradient-left {
+    position: absolute;
+    height: 20%;
+    width: 50%;
+    top: 9vmin;
+    -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.0));
+    mask-image: linear-gradient (rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.0));
+}
+#fog-gradient-right {
+    position: absolute;
+    height: 20%;
+    width: 50%;
+    top: 9vmin;
+    /* background-color: red; */
+    -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.0));
+    mask-image: linear-gradient (rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.0));
+}
+
+.left {
+    left: 0px;
+    background: linear-gradient(
+        to left,
+        rgba(245, 66, 230, 0.6) 20%,
+        rgba(245,66,93,0.95) 30% 45%,
+        rgba(245,185,66,0.95) 55% 70%,
+        rgba(173,66,245,0.95) 80%
+    );
+}
+.right {
+    left: 50%;
+    background: linear-gradient(
+        to right,
+        rgba(245, 66, 230, 0.6) 20%,
+        rgba(245,66,93,0.95) 30% 45%,
+        rgba(245,185,66,0.95) 55% 70%,
+        rgba(173,66,245,0.95) 80%
+    );
+}
+
+#background-mobile {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    background-color: green;
+}
+

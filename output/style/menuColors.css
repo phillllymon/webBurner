@@ -1,0 +1,114 @@
+/* default is blue scheme - see menu.css */
+
+:root {
+    --redShadow: rgb(235, 0, 0);
+    --redDark: rgb(107, 0, 0);
+    --redBackground: rgb(255, 73, 73);
+    --redMedium: rgb(124, 73, 73);
+    --greenShadow: rgb(0, 235, 0);
+    --greenDark: rgb(0, 107, 0);
+    --greenBackground: rgb(188, 255, 191);
+    --greenMedium: rgb(83, 124, 83);
+    --purpleShadow: rgb(250, 0, 250);
+    --purpleDark: rgb(132, 0, 132);
+    --purpleBackground: rgb(249, 188, 255);
+    --purpleMedium: rgb(134, 84, 134);
+}
+
+.menu-red {
+    box-shadow: 0px 0px 5px var(--redShadow);
+    border: 0.75vh solid var(--redDark);
+    background-color: var(--redBackground);
+}
+.menu-purple {
+    box-shadow: 0px 0px 5px var(--purpleShadow);
+    border: 0.75vh solid var(--purpleDark);
+    background-color: var(--purpleBackground);
+}
+.menu-green {
+    box-shadow: 0px 0px 5px var(--greenShadow);
+    border: 0.75vh solid var(--greenDark);
+    background-color: var(--greenBackground);
+}
+
+.menu-green .menu-title {
+    cursor: default;
+    font-size: 3vh;
+    color: var(--greenDark);
+    margin: 0.5vh;
+}
+.menu-red .menu-title {
+    cursor: default;
+    font-size: 3vh;
+    color: var(--redDark);
+    margin: 0.5vh;
+}
+.menu-purple .menu-title {
+    cursor: default;
+    font-size: 3vh;
+    color: var(--purpleDark);
+    margin: 0.5vh;
+}
+
+
+.menu-red .primary-button {
+    background-color: var(--redDark);
+    color: var(--redBackground);
+}
+.menu-purple .primary-button {
+    background-color: var(--purpleDark);
+    color: var(--purpleBackground);
+}
+.menu-green .primary-button {
+    background-color: var(--greenDark);
+    color: var(--greenBackground);
+}
+
+.menu-red .left-arrow {
+    border-right: 2.5vh solid var(--redBackground);
+}
+.menu-green .left-arrow {
+    border-right: 2.5vh solid var(--greenBackground);
+}
+.menu-purple .left-arrow {
+    border-right: 2.5vh solid var(--purpleBackground);
+}
+
+.menu-red .menu-choice {
+    background-color: var(--redDark);
+    color: var(--redBackground);
+    box-shadow: 0px 0px 5px var(--redShadow);
+}
+.menu-green .menu-choice {
+    background-color: var(--greenDark);
+    color: var(--greenBackground);
+    box-shadow: 0px 0px 5px var(--greenShadow);
+}
+.menu-purple .menu-choice {
+    background-color: var(--purpleDark);
+    color: var(--purpleBackground);
+    box-shadow: 0px 0px 5px var(--purpleShadow);
+}
+
+.menu-red .level {
+    color: var(--redMedium);
+}
+.menu-green .level {
+    color: var(--greenMedium);
+}
+.menu-purple .level {
+    color: var(--purpleMedium);
+}
+
+.menu-red .level-selected {
+    color: var(--redBackground);
+    background-color: var(--redDark);
+}
+.menu-green .level-selected {
+    color: var(--greenBackground);
+    background-color: var(--greenDark);
+}
+.menu-purple .level-selected {
+    color: var(--purpleBackground);
+    background-color: var(--purpleDark);
+}

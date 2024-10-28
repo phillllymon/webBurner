@@ -1,0 +1,305 @@
+#play-arrow {
+    height: 0vh;
+    border-left: 4vh solid gray;
+    border-top: 2vh solid transparent;
+    border-bottom: 2vh solid transparent;
+}
+#button-pause {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0px;
+}
+#button-restart {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0px;
+}
+.pause-rectangle {
+    height: 4vh;
+    width: 1.5vh;
+    background-color: gray;
+}
+#restart-arrow {
+    height: 0vh;
+    border-right: 3vh solid gray;
+    border-top: 2vh solid transparent;
+    border-bottom: 2vh solid transparent;
+}
+#restart-rectangle {
+    height: 4vh;
+    width: 0.75vh;
+    background-color: gray;
+}
+.show-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.hamburger-rectangle {
+    height: 0.75vh;
+    width: 4vh;
+    border-radius: 0.3vh;
+    background-color: gray;
+    /* box-shadow: 0px 0px 10px lightgray; */
+}
+#show-settings {
+    position: relative;
+}
+.gear-teeth {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2vh;
+    height: 0.6vh;
+    border-right: 1.25vh solid gray;
+    border-left: 1.25vh solid gray;
+    /* border-radius: 0.4vh; */
+    /* box-shadow: 0px 0px 10px lightgray; */
+}
+#teeth1 {
+    transform: translate(-50%, -50%);
+}
+#teeth2 {
+    transform: translate(-50%, -50%) rotate(70deg);
+}
+#teeth3 {
+    transform: translate(-50%, -50%) rotate(35deg);
+}
+#teeth4 {
+    transform: translate(-50%, -50%) rotate(-35deg);
+}
+#teeth5 {
+    transform: translate(-50%, -50%) rotate(-70deg);
+}
+#outer-gear-circle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1.5vh;
+    height: 1.5vh;
+    border: 1vh solid gray;
+    border-radius: 50%;
+}
+#show-stats {
+    position: relative;
+}
+/* #trophy-base-bottom {
+    position: absolute;
+    left: 10%;
+    top: 90%;
+    width: 80%;
+    height: 10%;
+    background-color: gray;
+}
+#trophy-base-top {
+    position: absolute;
+    left: 20%;
+    top: 70%;
+    width: 60%;
+    height: 20%;
+    background-color: gray;
+}
+#trophy-stem {
+    position: absolute;
+    left: 45%;
+    top: 0%;
+    width: 10%;
+    height: 70%;
+    background-color: gray;
+}
+#trophy-cup-right {
+    position: absolute;
+    left: 55%;
+    top: 0%;
+    width: 20%;
+    height: 60%;
+    background-color: gray;
+    border-bottom-right-radius: 100%; 
+}
+#trophy-cup-left {
+    position: absolute;
+    left: 25%;
+    top: 0%;
+    width: 20%;
+    height: 60%;
+    background-color: gray;
+    border-bottom-left-radius: 100%; 
+}
+#trophy-handle-top {
+    position: absolute;
+    left: 5%;
+    top: 2%;
+    width: 90%;
+    height: 8%;
+    background-color: gray; 
+}
+#trophy-handle-bottom {
+    position: absolute;
+    left: 5%;
+    top: 0%;
+    width: 90%;
+    height: 50%;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    box-sizing: border-box;
+    border-bottom: 1vw solid gray;
+    border-left: 1vw solid gray;
+    border-right: 1vw solid gray;
+} */
+
+#trophy-base-bottom {
+    position: absolute;
+    left: 15%;
+    top: 86%;
+    width: 70%;
+    height: 8%;
+    background-color: gray;
+}
+#trophy-base-top {
+    position: absolute;
+    left: 25%;
+    top: 70%;
+    width: 50%;
+    height: 15%;
+    background-color: gray;
+}
+#trophy-stem {
+    position: absolute;
+    left: 46%;
+    top: 6%;
+    width: 8%;
+    height: 64%;
+    background-color: gray;
+}
+#trophy-cup-right {
+    position: absolute;
+    left: 54%;
+    top: 6%;
+    width: 16%;
+    height: 52%;
+    background-color: gray;
+    border-bottom-right-radius: 100%; 
+}
+#trophy-cup-left {
+    position: absolute;
+    left: 30%;
+    top: 6%;
+    width: 16%;
+    height: 52%;
+    background-color: gray;
+    border-bottom-left-radius: 100%; 
+}
+#trophy-handle-top {
+    position: absolute;
+    left: 12%;
+    top: 8%;
+    width: 76%;
+    height: 5%;
+    background-color: gray; 
+}
+#trophy-handle-bottom {
+    position: absolute;
+    left: 12%;
+    top: 6%;
+    width: 76%;
+    height: 42%;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    box-sizing: border-box;
+    border-bottom: 0.75vw solid gray;
+    border-left: 0.75vw solid gray;
+    border-right: 0.75vw solid gray;
+}
+
+/* #inner-gear-circle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1.25vh;
+    height: 1.25vh;
+    border-radius: 50%;
+    background-color: gray;
+} */
+#full-screen {
+    position: relative;
+}
+#full-button-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 4vh;
+    height: 4vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.full-screen-quad {
+    width: 1.75vh;
+    height: 1.75vh;
+    box-sizing: border-box;
+}
+#full-top-left-quad {
+    border-top: 0.5vh solid gray;
+    border-left: 0.5vh solid gray;
+    border-right: 0.5vh solid transparent;
+    border-bottom: 0.5vh solid transparent;
+    margin-right: 0.25vh;
+    margin-bottom: 0.25vh;
+}
+#full-top-right-quad {
+    border-top: 0.5vh solid gray;
+    border-right: 0.5vh solid gray;
+    border-left: 0.5vh solid transparent;
+    border-bottom: 0.5vh solid transparent;
+    margin-left: 0.25vh;
+    margin-bottom: 0.25vh;
+}
+#full-bottom-left-quad {
+    border-bottom: 0.5vh solid gray;
+    border-left: 0.5vh solid gray;
+    border-right: 0.5vh solid transparent;
+    border-top: 0.5vh solid transparent;
+    margin-right: 0.25vh;
+    margin-top: 0.25vh;
+}
+#full-bottom-right-quad {
+    border-bottom: 0.5vh solid gray;
+    border-right: 0.5vh solid gray;
+    border-left: 0.5vh solid transparent;
+    border-top: 0.5vh solid transparent;
+    margin-left: 0.25vh;
+    margin-top: 0.25vh;
+}
+.turned-inward {
+    transform: rotate(180deg);
+}
+.full-arrow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2vh;
+    height: 0.25vh;
+    border-right: 1.5vh solid gray;
+    border-left: 1.5vh solid gray;
+}
+#full-arrow-a {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+#full-arrow-b {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.recorder-buttons {
+    position: fixed;
+    left: 0%;
+    top: 0%;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}

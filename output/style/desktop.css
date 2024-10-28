@@ -1,0 +1,83 @@
+.menu {
+    min-width: 30vw;
+}
+
+.big-choice {
+    width: 25vw;
+    height: 2vw;
+    font-size: 2vw;
+    padding: none;
+    margin: none;
+}
+
+.streak-container {
+    right: 50%;
+    bottom: 55%;
+    width: 25vh;
+}
+
+.streak-container-2 {
+    transform: translate(35vh, 0vh);
+    animation-name: bulge-2;
+    animation-duration: 2s;
+}
+.streak-container-3 {
+    transform: translate(40vh, 0vh);
+    animation-name: bulge-3;
+    animation-duration: 2s;
+}
+.streak-container-4 {
+    transform: translate(50vh, 0vh);
+    animation-name: bulge-4;
+    animation-duration: 2s;
+}
+@keyframes bulge-2 {
+    0% { transform: scale(2.5) translate(20%, 0%); opacity: 0.4; }
+    100% { transform: scale(1) translate(35vh, 0vh); opacity: 1; }
+}
+@keyframes bulge-3 {
+    0% { transform: scale(2.5) translate(25%, 0%); opacity: 0.4; }
+    100% { transform: scale(1) translate(40vh, 0vh); opacity: 1; }
+}
+@keyframes bulge-4 {
+    0% { transform: scale(2.5) translate(35%, 0%); opacity: 0.4; }
+    100% { transform: scale(1) translate(50vh, 0vh); opacity: 1; }
+}
+
+
+.perfect-container {
+    left: 50%;
+    bottom: 55%;
+    width: 25vh;
+}
+
+.perfect-container-2 {
+    transform: translate(-35vh, 0vh);
+    animation-name: perfectSlideLeft-2;
+    animation-duration: 2s;
+}
+.perfect-container-3 {
+    transform: translate(-40vh, 0vh);
+    animation-name: perfectSlideLeft-3;
+    animation-duration: 2s;
+}
+.perfect-container-4 {
+    transform: translate(-50vh, 0vh);
+    animation-name: perfectSlideLeft-4;
+    animation-duration: 2s;
+}
+@keyframes perfectSlideLeft-2 {
+    0% { transform: translate(0vh, 0vh) scale(2); }
+    10% { transform: translate(0vh, 0vh) scale(2); }
+    100% { transform: translate(-35vh, 0vh) scale(1); }
+}
+@keyframes perfectSlideLeft-3 {
+    0% { transform: translate(0vh, 0vh) scale(2); }
+    10% { transform: translate(0vh, 0vh) scale(2); }
+    100% { transform: translate(-40vh, 0vh) scale(1); }
+}
+@keyframes perfectSlideLeft-4 {
+    0% { transform: translate(0vh, 0vh) scale(2); }
+    10% { transform: translate(0vh, 0vh) scale(2); }
+    100% { transform: translate(-50vh, 0vh) scale(1); }
+}

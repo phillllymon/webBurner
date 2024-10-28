@@ -1,0 +1,624 @@
+#modal-background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    background-color: black;
+    opacity: 0.8;
+}
+
+.loading {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 7;
+    background-color: black;
+    opacity: 0.8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading-text {
+    /* position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); */
+    color: lightgray;
+    font-size: 3vh;
+    font-family:'Courier New', Courier, monospace;
+    z-index: 6;
+}
+
+#loading-bar {
+    width: 40vh;
+    max-width: 80vw;
+    height: 2vh;
+    border: 0.25vh solid lightgray;
+    margin-top: 1vh;
+    position: relative;
+    overflow: hidden;
+}
+
+#loading-bar-inner {
+    position: absolute;
+    left: 0vh;
+    top: 0vh;
+    height: 100%;
+    background-color: rgb(255, 231, 188);
+    width: 2%;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    /* width: 99vw;
+    height: 99vh; */
+    /* border: 2px solid gray; */
+}
+
+.play-area {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(230, 230, 230);
+    overflow: hidden;
+}
+
+
+
+.song-label {
+    position: absolute;
+    left: 50%;
+    top: 5px;
+    transform: translate(-50%, 0px);
+    font-size: 25px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: gray;
+    text-shadow: 0px 0px 2px lightgray;
+    z-index: 1;
+    padding: 15px;
+    border-radius: 50%;
+    /* border: 5px solid rgba(180, 180, 180, 0.4);
+    background-color: rgba(180, 180, 180, 0.6); */
+}
+
+.countdown-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18vh;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: gray;
+    z-index: 4;
+    padding: 15px;
+    opacity: 0.8;
+}
+
+.static-rock {
+    position: absolute;
+    left: 50%;
+    top: 150px;
+    transform: translate(-50%, 0px);
+    font-size: 11vh;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: orange;
+    z-index: 4;
+    /* padding: 15px; */
+    opacity: 0.3;
+    text-shadow: 0px 0px 10px lightgray;
+}
+
+.rock-label {
+    position: fixed;
+    left: 0%;
+    top: 20%;
+    height: 40%;
+    width: 100%;
+    text-align: center;
+    /* transform: translate(-50%, 0px); */
+    font-size: 10vh;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: orange;
+    z-index: 4;
+    /* padding: 15px; */
+    opacity: 0.4;
+    animation-name: youRock;
+    animation-duration: 500ms;
+    text-shadow: 0px 0px 10px lightgray;
+}
+@keyframes youRock {
+    0%    {font-size: 0vh}
+    100%    {font-size: 10vh}
+}
+.rock-shrink {
+    font-size: 0px;
+    animation-name: rockShrink;
+    animation-duration: 500ms;
+}
+@keyframes rockShrink {
+    0%    {font-size: 10vh}
+    100%    {font-size: 0vh}
+}
+
+.font-bigA {
+    font-size: 35px;
+}
+
+#menu-right {
+    width: 130px;
+    position: absolute;
+    left: 100%;
+    top: 20px;
+    padding: 5px;
+    text-align: center;
+    transform: translate(-102%, 0px);
+    background-color: rgb(214, 0, 118);
+    box-shadow: 0px 10px 10px gray;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.slides-container {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    width: 50vmin;
+    height: 150vmin;
+    perspective: 20vmin;
+}
+
+.slides {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 200%;
+    /* background-color: rgb(124, 0, 68); */
+    transform-style: preserve-3d;
+    transform: rotateX(20deg);
+    /* transform: rotateX(35deg); */
+    /* box-sizing: border-box; */
+    opacity: 1;
+    display: flex;
+    flex-direction: row;
+    border-left: 0.5vmin outset rgb(199, 129, 0);
+    border-right: 0.5vmin outset rgb(199, 129, 0);
+    /* opacity: 0; */
+}
+
+.three-wide-slides-container {
+    width: 75vmin;
+}
+
+.four-wide-slides-container {
+    width: 100vmin;
+}
+
+.slide {
+    position: relative;
+    width: 25vmin;
+    height: 50%;
+    box-sizing: border-box;
+    border-left: 0.5vmin inset rgb(199, 129, 0);
+    border-right: 0.5vmin inset rgb(199, 129, 0);
+    text-align: center;
+}
+
+.clear-slide {
+    position: relative;
+    width: 25vmin;
+    height: 50%;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 10;
+    /* background-color: green; */
+}
+
+.dummy-tapper {
+    position: absolute;
+    top: 0vmin;
+    left: 50%;
+    transform: translate(-50%, 0vmin);
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    border: 1.5vmin solid transparent;
+    border-left: 3vmin solid transparent;
+    border-right: 3vmin solid transparent;
+    z-index: 1;
+}
+
+/* note: slide is 150vmin long */
+.tapper {
+    position: absolute;
+    /* top: 135vmin; */
+    top: 0vmin;
+    /* travelLength is 136.5vmin to account for top border */
+    left: 50%;
+    transform: translate(-50%, 0px);
+    width: 80%;
+    /* width: 25%; */
+    /* height: 4%; */
+    height: 100%;
+    /* background-color: rgba(168,0,93,0.2); */
+    margin: auto;
+    /* border: 1.5vmin solid rgba(168,0,93,0.4);
+    border-left: 3vmin solid rgba(168,0,93,0.4);
+    border-right: 3vmin solid rgba(168,0,93,0.4); */
+    border: 1.5vmin solid rgb(134, 0, 74);
+    border-left: 3vmin solid rgb(134, 0, 74);
+    border-right: 3vmin solid rgb(134, 0, 74);
+    z-index: 1;
+    /* box-shadow: 0px 3px 5px rgb(51, 0, 28); */
+}
+
+#flashers-container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#tappers-inner-container {
+    position: absolute;
+    top: 135vmin;
+    height: 4%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.tapper-shadow-bar {
+    position: absolute;
+    top: 0vmin;
+    width: 100%;
+    height: 1.5vmin;
+    /* box-shadow: 0px 1px 3px rgb(216, 140, 0); */
+}
+#lower-shadow-bar {
+    top: 100%;
+    box-shadow: 0px 2.5px 5px rgb(163, 106, 0);
+    box-sizing: border-box;
+    border-bottom: 2px solid rgb(163, 106, 0);
+    transform: translate(0vmin, -4.5vmin);
+    /* ^this is a mystery - why does -4.5vmin get it to the right spot? */
+}
+
+.slider {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+.note {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 80%;
+    height: 4%;
+    background-color: orange;
+    margin: auto;
+    box-sizing: border-box;
+    border-top: 0.5vmin solid rgb(241, 133, 0);
+    border-bottom: 2vmin solid rgb(219, 121, 0);
+    border-right: 4vmin solid darkorange;
+    border-left: 4vmin solid darkorange;
+    /* box-shadow: 0px 3px 10px orange; */
+    /* box-shadow: 0px 0px 15px orange; */
+    box-shadow:
+        -0.8vmin 0.35vmin 0.8vmin rgb(255, 231, 188),
+        0.8vmin 0.35vmin 0.8vmin rgb(255, 231, 188);
+    opacity: 1;
+    border-radius: 5%;
+}
+
+#test-note {
+    /* top: 125vmin; */
+    /* top: 1255.8px; */
+    top: 1263px;
+}
+#test-note2 {
+    top: 0vmin;
+}
+
+.note-leaving-right {
+    position: absolute;
+    top: 1.5vmin;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 80%;
+    height: 100%;
+    /* background-color: green; */
+    animation-name: note-leave-right;
+    animation-duration: 0.6s;
+    z-index: 2;
+    background-color: rgb(255, 231, 188);
+    opacity: 0;
+}
+
+@keyframes note-leave-right {
+    0%      {opacity: 1; top: 1.5vmin; left: 50%}
+    /* 100%    {opacity: 0.5; top: 200px; left: 500px} */
+    100%    {opacity: 0; top: -85vmin; left: 200vmin}
+}
+
+.note-leaving-left {
+    position: absolute;
+    top: 1.5vmin;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 80%;
+    height: 100%;
+    /* background-color: green; */
+    animation-name: note-leave-left;
+    animation-duration: 0.6s;
+    z-index: 2;
+    background-color: rgb(255, 231, 188);
+    opacity: 0;
+}
+
+@keyframes note-leave-left {
+    0%      {opacity: 1; top: 1.5vmin; left: 50%}
+    /* 100%    {opacity: 0.5; top: 200px; left: 500px} */
+    100%    {opacity: 0; top: -85vmin; left: -200vmin}
+}
+
+.note-tail {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 20%;
+    height: 10vmin;
+    top: 110vmin;
+    background-color: orange;
+    margin: auto;
+    box-sizing: border-box;
+    border-right: 5px solid darkorange;
+    border-left: 5px solid darkorange;
+    /* box-shadow: -4px 3px 15px orange, 4px 3px 15px orange; */
+}
+.tail-active {
+    background-color: rgb(255, 231, 188);
+    box-shadow: -4px 3px 15px rgb(255, 231, 188), 4px 3px 15px rgb(255, 231, 188);
+}
+
+.cloud {
+    position: absolute;
+    top: 1.5vmin;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 80%;
+    height: 100%;
+    /* background-color: green; */
+    box-shadow: 0px 0px 4vmin rgb(255, 231, 188);
+    margin: auto;
+    z-index: 2;
+    animation-name: cloudFlash;
+    animation-duration: 0.3s;
+    opacity: 0;
+}
+
+@keyframes cloudFlash {
+    0%      {opacity: 1;}
+    100%    {opacity: 0;}
+}
+
+.cloud-tail {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    width: 100%;
+    height: 0.5vh;
+    border-radius: 50%;
+    /* background-color: green; */
+    box-shadow: 
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188),
+        0px 0px 4vh rgb(255, 231, 188);
+          
+    margin: auto;
+    z-index: 4;
+    animation-name: none;
+    /* animation-duration: 0.3s;
+    opacity: 0; */
+}
+
+.note-marked {
+    background-color: green;
+}
+
+
+/* @keyframes note-leave-left {
+    0%      {opacity: 1; transform: translate(0px, 0px)}
+    100%    {opacity: 0.5; transform: translate(-500px, -500px)}
+} */
+
+.on-fire {
+    box-shadow:
+        /* 30px 0px 40px orange, */
+        30px 0px 40px orange,
+        /* -30px 0px 40px orange, */
+        -30px 0px 40px orange;
+}
+
+.rock-meter {
+    position: absolute;
+    left: 20px;
+    top: 50px;
+    width: 200px;
+    height: 200px;
+    border: 2px solid gray;
+    transform: rotate(45deg);
+    border-radius: 0% 100% 0% 10%;
+    box-shadow: 5px 5px 10px gray;
+    overflow: hidden;
+}
+
+.meter-color {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+}
+
+#meter-green {
+    background-color: green;
+}
+#meter-yellow {
+    background-color: yellow;
+    transform: translate(20px, 55px) rotate(-60deg);
+}
+#meter-red {
+    background-color: red;
+    transform: translate(30px, 120px) rotate(-30deg);
+}
+#meter-needle {
+    position: absolute;
+    height: 16px;
+    width: 380px;
+    top: 186px;
+    left: -184px;
+    background-color: rgb(168, 0, 93);
+    border-radius: 90%;
+    transform: rotate(-45deg);
+    box-shadow: 5px 5px 10px orange;
+    box-sizing: border-box;
+    border: 2px solid darkorange;
+}
+
+
+
+.noter {
+    position: fixed;
+    left: 70%;
+    top: 10px;
+    height: 40px;
+    width: 40px;
+    background-color: green;
+    z-index: 3;
+}
+
+#give-feedback-modal {
+    font-size: 2vh;
+    width: 50vh;
+    z-index: 6;
+}
+#feedback-message {
+    width: 90%;
+}
+#feedback-email {
+    width: 90%;
+}
+
+.small-note {
+    font-size: 2vh;
+}
+
+
+
+
+#exp {
+    height: 80%;
+    width: 80%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+}
+
+#exp-slides-container {
+    width: 512px;
+    height: 256px;
+    display: flex;
+    flex-direction: row;
+}
+
+.exp-slide {
+    height: 256px;
+    width: 8px;
+    box-sizing: border-box;
+    /* border-left: 1px solid gray;
+    border-right: 1px solid gray; */
+    background-color: blue;
+
+}
+
+.exp-active {
+    background-color: blue;
+}
+
+.equalizer {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    height: 50%;
+    width: 2500px;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#equalizer-box {
+    position: absolute;
+    left: 50%;
+    height: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid black;
+    width: 2048px;
+    height: 260px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    background-color: white;
+}
+.equ-col {
+    width: 1px;
+    background-color: blue;
+}

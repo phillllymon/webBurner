@@ -1,0 +1,112 @@
+#settings-modal {
+    position: fixed;
+    top: 2vh;
+    left: 50%;
+    width: 90vw;
+    transform: translate(-50%, 0px);
+    background-color: lightgray;
+    z-index: 1001;
+    max-height: 99vh;
+    font-family: sans-serif;
+    /* overflow-y: auto; */
+    
+    border: 0.75vh solid rgba(180, 180, 180, 0.4);
+    border-radius: 0.5vmin;
+    color: rgb(90, 90, 90);
+    scrollbar-gutter: stable both-edges;
+    text-align: left;
+}
+
+.settings-items {
+    max-height: 90vh;
+    overflow-y: scroll;
+}
+
+.settings-item {
+    width: 100%;
+    border-top: 1px solid darkgray;
+    border-bottom: 1px solid darkgray;
+}
+
+.settings-item-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(236, 236, 236);
+    padding: 1vh;
+}
+
+.settings-item-title {
+    color: rgb(34, 34, 34);
+}
+
+.settings-toggle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2vh;
+}
+
+.settings-description {
+    padding: 1vh;
+}
+
+.toggle-switch {
+    height: 3vh;
+    width: 5vh;
+    border: 0.5vh solid darkgray;
+    border-radius: 2vh;
+    margin-right: 0.5vh;
+    margin-left: 0.5vh;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    background-color: white;
+    -webkit-tap-highlight-color:transparent;
+}
+
+.toggle-ball {
+    position: absolute;
+    top: 0vh;
+    right: 0vh;
+    height: 3vh;
+    width: 3vh;
+    border-radius: 50%;
+    background-color: gray;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color:transparent;
+}
+.toggle-ball-off {
+    left: 0vh;
+}
+.top-bar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.small-button {
+    background-color: gray;
+    cursor: pointer;
+    color: lightgray;
+    padding: 0.75vh;
+    font-size: 2vh;
+}
+#save-settings {
+    margin: 1vh;
+}
+
+#algorithm-selector {
+    width: 30vw;
+}
+
+#change-tappers {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1vh;
+}

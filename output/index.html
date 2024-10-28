@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beat Burner</title>
+    <link rel="stylesheet" href="style/styleReset.css">
+    <link rel="stylesheet" href="style/style.css">
+    <link id="background-css" rel="stylesheet" href="style/background.css">
+    <link rel="stylesheet" href="style/menu.css">
+    <link rel="stylesheet" href="style/tutorial.css">
+    <link rel="stylesheet" href="style/buttons.css">
+    <link rel="stylesheet" href="style/stream.css">
+    <link rel="stylesheet" href="style/animate.css">
+    <link rel="stylesheet" href="style/noteColors.css">
+    <link rel="stylesheet" href="style/sideMeters.css">
+    <link rel="stylesheet" href="style/settings.css">
+    <link rel="stylesheet" href="style/menuColors.css">
+    <link rel="stylesheet" href="style/songSelect.css">
+
+</head>
+<body>
+    <center>
+        <div id="game-container" class="game-container">
+            <div id="start-curtain"><br><br><br><br><br>Beatburner</div>
+            <div id="message-modal" class="menu hidden">
+                <div id="message-content">
+                    Here is a message
+                </div>
+                <div id="dismiss-message-button" class="menu-choice">Continue</div>
+            </div>
+            <div id="give-feedback-modal" class="hidden">
+                I'd love to hear from you! Be sure to include your email if you'd like a reply.
+                <br>
+                <br>
+                <textarea id="feedback-message" placeholder="message"></textarea>
+                <br>
+                <input type="text" id="feedback-email" placeholder="email (optional)" />
+                <br>
+                <br>
+                <button id="cancel-give-feedback">Cancel</button>
+                <button id="submit-give-feedback" >Submit</button>
+            </div>
+            <div id="loading" class="loading hidden">
+                <div id="loading-text">Keep your shirt on...</div>
+                <div id="loading-bar">
+                    <div id="loading-bar-inner"></div>
+                </div>
+            </div>
+            
+            <div id="modal-background" class="hidden"></div>
+            <div id="connecting-radio" class="hidden">
+                <div id="radio-status-title" class="menu-title">
+                    Connecting...
+                </div>
+                <div id="acquiring" class="menu-choice connect-status">
+                    Acquiring stream
+                </div>
+                <div id="initial-received" class="menu-choice connect-status">
+                    Initial data received 
+                </div>
+                <div id="now-streaming" class="menu-choice connect-status">
+                    Streaming
+                </div>
+                <div id="cancel-radio-connect" class="menu-choice">
+                    Cancel
+                </div>
+            </div>
+            <div id="feedback" class="menu">
+                <div id="feedback-title" class="feedback-title"></div>
+                <div id="song-information-bar" class="feedback-title"></div>
+                <div id="song-difficulty"></div>
+                <div class="feedback-item">
+                    <div id="percent-bar-container">
+                        <div id="percent-bar-inner-container"><div id="percent-bar"></div></div>
+                    </div>
+                    <div id="feedback-percent-title" class="percent-title-container">
+                        <div id="feedback-percent"></div>
+                        <div id="song-pass" class="song-mark song-mark-left">
+                            <div class="song-mark">
+                                <div class="green-check"></div>
+                            </div>
+                        </div>
+                        <div id="song-fail" class="song-mark song-mark-left">
+                            <div class="song-mark">
+                                <div class="red-x-a"></div>
+                                <div class="red-x-b"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="feedback-streak" class="feedback-item"></div>
+                <div id="feedback-streak-overall" class="feedback-item"></div>
+                <div class="row">
+                    <div id="replay" class="primary-button">Replay song</div>
+                    <div id="no-replay" class="primary-button">Switch song</div>
+                </div>
+            </div>
+            <div id="first-time-menu" class="menu menu-blue">
+                <div class="menu-title">
+                    Welcome to Beatburner!
+                </div>
+                <div id="start-tutorial-button" class="menu-choice big-choice">
+                    Start tutorial
+                </div>
+                <div id="skip-tutorial-button" class="menu-choice">
+                    Skip tutorial
+                </div>
+            </div>
+            <div id="source-menu" class="menu menu-red">
+                <div class="menu-title">
+                    Choose music source
+                </div>
+                <div id="source-demo-songs" class="menu-choice">
+                    Built-in songs
+                </div>
+                <div id="source-upload" class="menu-choice">
+                    Upload music
+                </div>
+                <div id="source-radio" class="menu-choice">
+                    Radio
+                </div>
+                <div id="source-streaming" class="menu-choice">
+                    Streaming
+                </div>
+                <div class="menu-title">
+                    or
+                </div>
+                <div id="source-tutorial" class="menu-choice">
+                    Repeat tutorial
+                </div>
+            </div>
+            <div id="main-menu" class="menu">
+                <div id="show-source-menu" class="primary-button"><div class="left-arrow"></div><div>Switch music source</div></div>
+                <br>
+                
+                <div id="choose-song-button">
+                    <div class="menu-title">Next song</div>
+                    <div id="song-to-play" class="inset-blue"></div>
+                    <div class="primary-button">Change</div>
+                </div>
+                
+                
+                <div id="upload-song-button" class="menu-title">
+                    Upload song
+                    <br>
+                    <input class="upload" id="file-input" type="file" />
+                    <br>
+                </div>
+                <div id="select-station-button" class="menu-title">
+                    Select station
+                    <select id="select-station" class="select"></select>
+                </div>
+                <div id="show-stream-modal-button" class="menu-choice">
+                    Connect stream
+                </div>
+                <br>
+                <div id="change-difficulty-button">
+                    <div class="menu-title">Difficulty</div>
+                    <div id="current-difficulty" class="inset-blue"></div>
+                    <div class="primary-button">Change</div>
+                </div>
+                <!-- <div class="menu-title">Difficulty</div>
+                <div id="level-1" class="level">super easy</div>
+                <div id="level-2" class="level">easy</div>
+                <div id="level-3" class="level">medium</div>
+                <div id="level-4" class="level">hard</div>
+                <div id="level-5" class="level">crazy hard</div>
+                <br>
+                <div class="menu-title">Slides</div>
+                <div id="slides-2" class="level">2</div>
+                <div id="slides-3" class="level">3</div>
+                <div id="slides-4" class="level">4</div> -->
+                <br>
+                <br>
+                <br>
+                <div id="close-and-play" class="primary-button">Play</div>
+                <div id="close-and-play-ghost" class="primary-button primary-button-ghost">loading...</div>
+            </div>
+            <div id="difficulty-menu" class="menu menu-red hidden">
+                <br>
+                <div class="menu-title">Difficulty</div>
+                <div id="level-1" class="level">Super easy</div>
+                <div id="level-2" class="level">Easy</div>
+                <div id="level-3" class="level">Medium</div>
+                <div id="level-4" class="level">Hard</div>
+                <div id="level-5" class="level">Crazy hard</div>
+                <br>
+                <div class="menu-title">Slides</div>
+                <div id="slides-2" class="level">2</div>
+                <div id="slides-3" class="level">3</div>
+                <div id="slides-4" class="level">4</div>
+                <br>
+                <div id="close-difficulty" class="primary-button">Done</div>
+            </div>
+            <div id="choose-song-menu" class="menu menu-green hidden">
+                <div id="back-to-main-menu" class="primary-button"><div class="left-arrow"></div><div>Back</div></div>
+                <br>
+                <div class="menu-title">
+                    Choose song
+                </div>
+                <div id="level-sub-title" class="menu-sub-title">
+                    
+                </div>
+                <div id="stages" class="inset-text">
+                </div>
+            </div>
+            <div id="stream-modal" class="menu menu-purple hidden">    
+                This is an experimental feature!
+                <br>
+                <br>
+                You can play with music from your favorite streaming service but it takes a minute to
+                set up and you'll need the help of a computer in addition to this device. To set it up,
+                visit
+                <br>
+                <br>
+                <a href="https://beatburner.com/live/stream.html" target="none">
+                    beatburner.com/live/stream.html
+                </a>
+                <br>
+                <br>
+                on your other computer. Once you
+                get your stream id, enter it in the box below and hit Connect.
+                <br>
+                <br>
+                <input type="text" id="enter-stream-id" placeholder="stream id"/>
+                <br>
+                <br>
+                <div id="stream-status">not connected</div>
+                <br>
+                <br>
+                <div id="connect-stream-button" class="menu-choice">Connect</div>
+                <div id="cancel-stream-button" class="menu-choice">Cancel</div>
+            </div>
+            <div id="stats-modal" class="menu menu-green hidden">
+                <div class="menu-title">
+                    Current rank
+                </div>
+                <div id="stats-rank">
+                    groupie
+                </div>
+                <br>
+                <div class="menu-title">
+                    Longest streaks
+                </div>
+                <div class="feedback-item"></div>
+                <table>
+                    <tr>
+                        <td class="stats-level-label">Super easy:</td><td>&nbsp;&nbsp;</td><td id="stats-super-easy-streak">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stats-level-label">Easy:</td><td>&nbsp;&nbsp;</td><td id="stats-easy-streak">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stats-level-label">Medium:</td><td>&nbsp;&nbsp;</td><td id="stats-medium-streak">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stats-level-label">Hard:</td><td>&nbsp;&nbsp;</td><td id="stats-hard-streak">0</td>
+                    </tr>
+                    <tr>
+                        <td class="stats-level-label">Crazy hard:</td><td>&nbsp;&nbsp;</td><td id="stats-crazy-hard-streak">0</td>
+                    </tr>
+                </table>
+                <br>
+                <div class="menu-title">
+                    Overall accuracy
+                </div>
+                <div class="feedback-item"></div>
+                <table>
+                    <tr>
+                        <td class="stats-level-label">Super easy:</td><td>&nbsp;&nbsp;</td><td id="stats-super-easy-percent">0.0 %</td>
+                    </tr>
+                    <tr>
+                        <td class="stats-level-label">Easy:</td><td>&nbsp;&nbsp;</td><td id="stats-easy-percent">0.0 %</td>
+                    </tr>
+                    <tr>
+                        <td class="stats-level-label">Medium:</td><td>&nbsp;&nbsp;</td><td id="stats-medium-percent">0.0 %</td>
+                    </tr>
+                    <tr>
+                        <td class="stats-level-label">Hard:</td><td>&nbsp;&nbsp;</td><td id="stats-hard-percent">0.0 %</td>
+                    </tr>
+                    <tr>
+                        <td class="stats-level-label">Crazy hard:</td><td>&nbsp;&nbsp;</td><td id="stats-crazy-hard-percent">0.0 %</td>
+                    </tr>
+                </table>
+                <br>
+                <div class="menu-title">
+                    Total notes hit
+                </div>
+                <div class="feedback-item"></div>
+                <div id="stats-total-notes-hit">
+                    0
+                </div>
+                <br>
+                <div class="menu-title">
+                    Notes hit on fire
+                </div>
+                <div class="feedback-item"></div>
+                <div id="stats-notes-hit-on-fire">
+                    0 (0.0 %)
+                </div>
+                <br>
+                <div id="close-stats-button" class="menu-choice">Close</div>
+            </div>
+            <div id="settings-modal" class="hidden">
+                <div class="top-bar">
+                    <div class="menu-title">
+                        Settings
+                    </div>
+                    <div id="save-settings" class="small-button">Done</div>
+                </div>
+                <div class="settings-items">
+                    
+                    <div id="change-tapper-keys-item" class="settings-item">
+                        <div class="settings-item-bar">
+                            <div class="settings-item-title">
+                                Tapper Keys
+                            </div>
+                            <div id="change-key-message">
+                                
+                            </div>
+                        </div>
+                        <div id="change-tappers">
+                            <div>
+                                <button id="change-left">Change</button>
+                                <br>
+                                <center id="left-key"></center>
+                            </div>
+                            <div>
+                                <button id="change-a">Change</button>
+                                <br>
+                                <center id="a-key"></center>
+                            </div>
+                            <div>
+                                <button id="change-b">Change</button>
+                                <br>
+                                <center id="b-key"></center>
+                            </div>
+                            <div>
+                                <button id="change-right">Change</button>
+                                <br>
+                                <center id="right-key"></center>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Use the buttons above to customize which key activates the tapper
+                            on each slide.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div class="settings-item-title">
+                                Calibrate lag
+                            </div>
+                            <div>
+                                <button id="open-calibration">Calibrate</button>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Manually calibrate audio/visual lag, often caused by headphones. Do this when
+                            the lag is severe and constant instead of relying on autocalibration. (See below)
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div id="speed-title" class="settings-item-title">
+                                Note speed
+                            </div>
+                            <div class="settings-toggle">
+                                <div id="toggle-speed">
+                                    medium
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Select speed
+                            <select id="speed-selector" class="select">
+                                <option value="6500">super slow</option>
+                                <option value="5500">slow</option>
+                                <option value="4700" selected>medium</option>
+                                <option value="4000">fast</option>
+                                <option value="3500">crazy fast</option>
+                            </select>
+                            <br>
+                            A slower speed is usually easier, but choose a faster speed for harder levels to avoid
+                            notes rendering on top of each other. Note speed does not affect the song speed or the
+                            length of the hit window.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div id="algorithm-title" class="settings-item-title">
+                                Algorithm
+                            </div>
+                            <div class="settings-toggle">
+                                <div id="toggle-algorithm">
+                                    A
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Use algorithm
+                            <select id="algorithm-selector" class="select">
+                                <option value="A" selected>A</option>
+                                <option value="B">B</option>
+                            </select>
+                            <br>
+                            Algorithm B will generate more dynamic note patterns and usually more notes. Algorithm A will
+                            be closer to a steady beat.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div id="animation-style-title" class="settings-item-title">
+                                Animation style
+                            </div>
+                            <div class="settings-toggle">
+                                <div id="toggle-animation-style">
+                                    Light up
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Use style
+                            <select id="animation-style-selector" class="select">
+                                <option value="lightUp" selected>Light up</option>
+                                <option value="flyAway">Fly away</option>
+                                <option value="both">Both</option>
+                            </select>
+                            <br>
+                            Choose what happens when you successfully hit a note.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div id="calibration-title" class="settings-item-title">
+                                Autocalibration
+                            </div>
+                            <div class="settings-toggle">
+                                <div>OFF</div>
+                                <div id="toggle-calibration" class="toggle-switch">
+                                    <div id="toggle-calibration-ball" class="toggle-ball"></div>
+                                </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Autocalibration continually adjusts note timing as you play to account
+                            for factors like song style, lag, or when it makes sense for you
+                            to tap.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div id="background-title" class="settings-item-title">
+                                Animated Background
+                            </div>
+                            <div class="settings-toggle">
+                                <div>OFF</div>
+                                <div id="toggle-background" class="toggle-switch">
+                                    <div id="toggle-background-ball" class="toggle-ball"></div>
+                                </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            If your gameplay is choppy, turning off the animated background
+                            may increase performance.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div id="sustained-title" class="settings-item-title">
+                                Sustained Notes
+                            </div>
+                            <div class="settings-toggle">
+                                <div>OFF</div>
+                                <div id="toggle-sustained" class="toggle-switch">
+                                    <div id="toggle-sustained-ball" class="toggle-ball"></div>
+                                </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Sustained notes frequency
+                            <select id="select-sustained-frequency" class="select">
+                                <option value="few" selected>few</option>
+                                <option value="medium">medium</option>
+                                <option value="many">many</option>
+                            </select>
+                            <br>
+                            Sustained notes are notes with tails that you need to hold down.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div id="double-title" class="settings-item-title">
+                                Double Notes
+                            </div>
+                            <div class="settings-toggle">
+                                <div>OFF</div>
+                                <div id="toggle-double" class="toggle-switch">
+                                    <div id="toggle-double-ball" class="toggle-ball"></div>
+                                </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Double note frequency
+                            <select id="select-double-frequency" class="select">
+                                <option value="few" selected>few</option>
+                                <option value="medium">medium</option>
+                                <option value="many">many</option>
+                            </select>
+                            <br>
+                            Double notes are simultaneous notes on different slides that you have to hit at the
+                            same time.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div id="haptics-title" class="settings-item-title">
+                                Haptic Feedback
+                            </div>
+                            <div class="settings-toggle">
+                                <div>OFF</div>
+                                <div id="toggle-haptics" class="toggle-switch">
+                                    <div id="toggle-haptics-ball" class="toggle-ball"></div>
+                                </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Haptic feedback vibrates the phone slightly when you get a note.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div id="animations-title" class="settings-item-title">
+                                Animations
+                            </div>
+                            <div class="settings-toggle">
+                                <div>OFF</div>
+                                <div id="toggle-animations" class="toggle-switch">
+                                    <div id="toggle-animations-ball" class="toggle-ball"></div>
+                                </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Animations play when the skilz meter or the streak container reach the top.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div id="effects-title" class="settings-item-title">
+                                Missed note effects
+                            </div>
+                            <div class="settings-toggle">
+                                <div>OFF</div>
+                                <div id="toggle-effects" class="toggle-switch">
+                                    <div id="toggle-effects-ball" class="toggle-ball"></div>
+                                </div>
+                                <div>ON</div>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Missed note effects play a sound and reduce the song volume when you miss
+                            a note. The volume returns to normal on the next note you get.
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div class="settings-item-title">
+                                Reset stats and scores
+                            </div>
+                            <div>
+                                <button id="reset-button" disabled="disabled">Reset</button>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            <input type="checkbox" id="reset-checkbox" /> I really want to reset my stats and scores
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-bar">
+                            <div class="settings-item-title">
+                                Contact
+                            </div>
+                            <div>
+                                <button id="open-feedback-link">Contact form</button>
+                            </div>
+                        </div>
+                        <div class="settings-description">
+                            Send a message to the creator of Beatburner. Any feedback is welcome!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="play-area" class="play-area">
+                <div id="background-left" class="left"></div>
+                <div id="background-right" class="right"></div>
+                <div id="slides-container" class="slides-container">
+                    <div id="slides-under-red" class="slides-under"></div>
+                    <div id="slides-under-blue" class="slides-under"></div>
+                    <div id="slides-under-purple" class="slides-under"></div>
+                    <div id="slides-under-green" class="slides-under"></div>
+                    <div id="slides" class="slides">
+                        <div id="a-slider" class="slider">
+                            <div id="slide-left" class="clear-slide">
+                                <!-- <div id="test-note-left" class="note"></div> -->
+                            </div>
+                            <div id="slide-a" class="clear-slide">
+                                <!-- <div id="test-note-a" class="note"></div> -->
+                            </div>
+                            <div id="slide-b" class="clear-slide">
+                                <!-- <div id="test-note-b" class="note"></div> -->
+                            </div>
+                            <div id="slide-right" class="clear-slide">
+                                <!-- <div id="test-note-right" class="note"></div> -->
+                            </div>
+                        </div>
+                        <div id="b-slider" class="slider">
+                            <div id="b-slide-left" class="clear-slide">
+                                <!-- <div id="test-note-left" class="note"></div> -->
+                                <!-- <div class="permanent-smudge"></div> -->
+                                
+                            </div>
+                            <div id="b-slide-a" class="clear-slide">
+                                <!-- <div id="test-note-a" class="note"></div> -->
+                                <!-- <div class="permanent-smudge"></div> -->
+                                
+                            </div>
+                            <div id="b-slide-b" class="clear-slide">
+                                <!-- <div id="test-note-b" class="note"></div> -->
+                                <!-- <div class="permanent-smudge"></div> -->
+                                
+                            </div>
+                            <div id="b-slide-right" class="clear-slide">
+                                <!-- <div id="test-note-right" class="note"></div> -->
+                                <!-- <div class="permanent-smudge"></div> -->
+                                
+                            </div>
+                        </div>
+                        <div id="tappers-outer-container" class="slider">
+                            <div id="dummy-left" class="slide">
+                                <div id="smudge-left" class="middle-smudge"></div>
+                                <div class="inner-smudge"></div>
+                                <div class="spiral-down"></div>
+                                <div class="spiral-up"></div>
+                                <!-- <div class="smudge-center"></div> -->
+                            </div>
+                            <div id="dummy-a" class="slide">
+                                <div id="smudge-a" class="middle-smudge"></div>
+                                <div class="inner-smudge"></div>
+                                <div class="spiral-down"></div>
+                                <div class="spiral-up"></div>
+                                <!-- <div class="smudge-center"></div> -->
+                            </div>
+                            <div id="dummy-b" class="slide">
+                                <div id="smudge-b" class="middle-smudge"></div>
+                                <div class="inner-smudge"></div>
+                                <div class="spiral-down"></div>
+                                <div class="spiral-up"></div>
+                                <!-- <div class="smudge-center"></div> -->
+                            </div>
+                            <div id="dummy-right" class="slide">
+                                <div id="smudge-right" class="middle-smudge"></div>
+                                <div class="inner-smudge"></div>
+                                <div class="spiral-down"></div>
+                                <div class="spiral-up"></div>
+                                <!-- <div class="smudge-center"></div> -->
+                            </div>
+
+                            <div id="tappers-inner-container">
+                                <div class="tapper-shadow-bar"></div>
+                                <div id="lower-shadow-bar" class="tapper-shadow-bar"></div>
+                                <div id="clear-slide-left" class="clear-slide">
+                                    
+                                    <div id="tapper-left" class="tapper">
+                                        <div id="bulb-left" class="note-bulb">S</div>
+                                        <div id="inset-left" class="inset-bulb">S</div>
+                                        <!-- <div id="fire-viewer-left" class="fire-viewer">
+                                            <div id="fire-screen-left" class="fire-screen"></div>
+                                        </div> -->
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div id="clear-slide-a" class="clear-slide">
+                                    
+                                    
+                                    <div id="tapper-a" class="tapper">
+                                        <div id="bulb-a" class="note-bulb">C</div>
+                                        <div id="inset-a" class="inset-bulb">C</div>
+                                        
+                                        <!-- <div id="test-note2-lightup" class="note-lightup"></div> -->
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div id="clear-slide-b" class="clear-slide">
+                                    
+                                    <div id="tapper-b" class="tapper">
+                                        <div id="bulb-b" class="note-bulb">B</div>
+                                        <div id="inset-b" class="inset-bulb">B</div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div id="clear-slide-right" class="clear-slide">
+                                    
+                                    <div id="tapper-right" class="tapper">
+                                        <div id="bulb-right" class="note-bulb">J</div>
+                                        <div id="inset-right" class="inset-bulb">J</div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div id="flashers-container">
+                                    <div id="dummy-tapper-left-container" class="clear-slide">
+                                        <div id="dummy-tapper-left" class="dummy-tapper">
+                                            <div class="flash">
+                                                <div id="slide-left-note-lighted" class="note-lighted"></div>
+    
+                                                <div class="note-middle-lighted"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="dummy-tapper-a-container" class="clear-slide">
+                                        <div id="dummy-tapper-a" class="dummy-tapper">
+                                            <div class="flash">
+                                                <div id="slide-a-note-lighted" class="note-lighted"></div>
+    
+                                                <div class="note-middle-lighted"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="dummy-tapper-b-container" class="clear-slide">
+                                        <div id="dummy-tapper-b" class="dummy-tapper">
+                                            <div class="flash">
+                                                <div id="slide-b-note-lighted" class="note-lighted"></div>
+    
+                                                <div class="note-middle-lighted"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="dummy-tapper-right-container" class="clear-slide">
+                                        <div id="dummy-tapper-right" class="dummy-tapper">
+                                            <div class="flash">
+                                                <div id="slide-right-note-lighted" class="note-lighted"></div>
+    
+                                                <div class="note-middle-lighted"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="skilz-meter" class="skilz-meter">
+                            <div id="skilz-green"></div>
+                            <div id="skilz-red"></div>
+                            <div id="skilz-channel" class="skilz-channel">
+                                <div id="skilz-ball"></div>
+                            </div>
+                        </div>
+                        <div id="streak-meter" class="streak-meter">
+                            <div id="streak-channel" class="skilz-channel">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="fog-top-left" class="left"></div>
+                <div id="fog-top-right" class="right"></div>
+                <div id="fog-middle-left" class="left"></div>
+                <div id="fog-middle-right" class="right"></div>
+                <div id="fog-gradient-left" class="left"></div>
+                <div id="fog-gradient-right" class="right"></div>
+                <div id="fog-mobile" class="hidden">
+                    <div id="fog-mobile-top"></div>
+                    <div id="fog-mobile-gradient"></div>
+                </div>
+                
+                <div id="rock-label"></div>
+                
+                <div id="song-label" class="song-label"></div>
+                <div id="controls-bottom" class="controls-bottom stuck-to-bottom">
+                    <div id="button-play" class="control-button-bottom">
+                        <div id="play-arrow"></div>
+                        <div id="button-play-beacon" class="beacon hidden"></div>
+                    </div>
+                    <div id="button-pause" class="control-button-bottom">
+                        <div class="pause-rectangle"></div>
+                        <div class="pause-rectangle"></div>
+                    </div>
+                    <div id="button-restart" class="control-button-bottom">
+                        <div id="restart-rectangle"></div>
+                        <div id="restart-arrow"></div>
+                    </div>
+                    
+                    <div id="show-menu" class="show-menu control-button-bottom">
+                        <div class="hamburger-rectangle"></div>
+                        <div class="hamburger-rectangle"></div>
+                        <div class="hamburger-rectangle"></div>
+                    </div>
+                </div>
+                <div id="controls-top-left" class="controls-top-left">
+                    <div id="show-settings" class="control-button-bottom">
+                        <div id="teeth1" class="gear-teeth"></div>
+                        <div id="teeth2" class="gear-teeth"></div>
+                        <div id="teeth3" class="gear-teeth"></div>
+                        <div id="teeth4" class="gear-teeth"></div>
+                        <div id="teeth5" class="gear-teeth"></div>
+                        <div id="outer-gear-circle"></div>
+                        <div id="inner-gear-circle"></div>
+                    </div>
+                    <div id="show-stats" class="control-button-bottom">
+                        <div id="trophy-base-bottom"></div>
+                        <div id="trophy-base-top"></div>
+                        <div id="trophy-stem"></div>
+                        <div id="trophy-cup-right"></div>
+                        <div id="trophy-cup-left"></div>
+                        <div id="trophy-handle-top"></div>
+                        <div id="trophy-handle-bottom"></div>
+                    </div>
+                </div>
+                <!-- <div id="controls-left">
+                    <div id="button-restart" class="control-button">
+                        <div id="restart-rectangle"></div>
+                        <div id="restart-arrow"></div>
+                    </div>
+                    <div id="button-play" class="control-button">
+                        <div id="play-arrow"></div>
+                    </div>
+                    <div id="button-pause" class="control-button">
+                        <div class="pause-rectangle"></div>
+                        <div class="pause-rectangle"></div>
+                    </div>
+                </div> -->
+                <!-- <div id="controls-right">
+                    <div id="show-settings" class="control-button">
+                        <div id="teeth1" class="gear-teeth"></div>
+                        <div id="teeth2" class="gear-teeth"></div>
+                        <div id="teeth3" class="gear-teeth"></div>
+                        <div id="teeth4" class="gear-teeth"></div>
+                        <div id="teeth5" class="gear-teeth"></div>
+                        <div id="outer-gear-circle"></div>
+                        <div id="inner-gear-circle"></div>
+                    </div>
+                    <div id="show-menu" class="control-button">
+                        <div class="hamburger-rectangle"></div>
+                        <div class="hamburger-rectangle"></div>
+                        <div class="hamburger-rectangle"></div>
+                    </div>
+                </div> -->
+                
+            </div>
+        </div>
+    </center>
+    <!-- <div id="start-curtain"><br><br><br><br><br>Beatburner</div> -->
+    <div id="close-tutorial" class="close-tutorial tutorial-button hidden">Exit tutorial</div>
+    <div id="perfect-container" class="perfect-container">
+        <div id="perfect" class="perfect hidden">perfect</div>
+    </div>
+    <div id="streak-container" class="streak-container streak-container-3">
+        <div id="streak-label" class="streak-label">STREAK</div>
+        <div id="streak-number" class="streak-number">55</div>
+    </div>
+    <div id="tutorial-step-1" class="tutorial-step hidden">
+        Notes come down the slides like this.
+    </div>
+    <div id="tutorial-step-2" class="tutorial-step hidden">
+        Your job is to tap just as each note passes through the light bar here.
+        <br>
+        <br>
+        <div id="tutorial-3-button" class="tutorial-button">Next</div>
+    </div>
+    <div id="tap-smudge" class="tap-smudge hidden"></div>
+    <div id="tutorial-step-3" class="tutorial-step hidden">
+        The tap area is down here below the light bar. If you prefer you can also tap directly on the note. Either way,
+        be sure to tap just as the note is inside the light bar.
+        <br>
+        <br>
+        <div id="tutorial-4-button" class="tutorial-button">Try it</div>
+    </div>
+    <div id="tutorial-step-5" class="tutorial-step hidden">
+        You're a natural! Ready for real music?
+        <br>
+        <br>
+        <div id="tutorial-6-button" class="tutorial-button">Play song</div>
+    </div>
+    <div id="tutorial-step-7" class="tutorial-step hidden">
+        <div id="step-7-text">
+        </div>
+        <br>
+        <br>
+        <div class="tutorial-button-bar">
+            <div id="repeat-tutorial-song-button" class="tutorial-button">Retry</div>
+            <div id="tutorial-8-button" class="tutorial-button">Continue</div>
+        </div>
+    </div>
+    <div id="tutorial-step-8" class="tutorial-step hidden">
+        Well done!
+        <br>
+        <br>
+        Looks like you're ready to start the first stage of the game.
+        <br>
+        <br>
+        <!-- <div id="tutorial-9-button" class="tutorial-button">Next</div> -->
+        <div id="tutorial-9-button" class="tutorial-button">Continue</div>
+    </div>
+    <div id="tutorial-step-10" class="tutorial-step hidden">
+        Congrats on finishing your first song!
+        <br>
+        <br>
+        You need 75% accuracy to pass a song on Super easy.
+        <br>
+        <br>
+        <div id="close-tutorial-10" class="tutorial-button">Next</div>
+    </div>
+    <div id="tutorial-step-11" class="tutorial-step hidden">
+        Here you'll see your accuracy and your longest streak in this song.
+        <br>
+        <br>
+        Your current streak persists throughout songs, so there's no limit to how big it can get.
+        <br>
+        <br>
+        <div id="close-tutorial-11" class="tutorial-button">Got it</div>
+    </div>
+    <div id="tutorial-step-12" class="tutorial-step hidden">
+        The next stage will unlock once you pass all the songs in this stage.
+        <br>
+        <br>
+        <div id="close-tutorial-12" class="tutorial-button">Got it</div>
+    </div>
+    <div id="tutorial-step-13" class="tutorial-step hidden">
+        Adjust the difficulty and how many slides you're playing with here.
+        <br>
+        <br>
+        <div id="close-tutorial-13" class="tutorial-button">Got it</div>
+    </div>
+    <div id="tutorial-arrow" class="tutorial-arrow hidden">
+        <div class="tutorial-arrow-container">
+            <div class="tutorial-arrow-shaft"></div>
+            <div class="tutorial-arrow-point-container">
+                <div class="tutorial-arrow-point-inner"></div>
+            </div>
+        </div>
+    </div>
+    <div id="calibrator" class="tutorial-step hidden">
+        <div>
+            Adjust visual/audio delay until the pings match the flashes.
+        </div>
+        <div id="flashy-thing-container">
+            <div id="flashy-stick-upper" class="calibration-stick"></div>
+            <div id="flashy-stick-middle" class="calibration-stick"></div>
+            <div id="flashy-stick-lower" class="calibration-stick"></div>
+        </div>
+        <br>
+        <div class="horizontal">
+            <div class="calibrate-button-container">
+                <div id="way-slower-button" class="calibrate-button">
+                    <div id="slower-arrow"></div>
+                </div>
+                <div>- 25</div>
+            </div>
+            <div class="calibrate-button-container">
+                <div id="slower-button" class="calibrate-button">
+                    <div id="slower-arrow"></div>
+                </div>
+                <div>- 1</div>
+            </div>
+            <div id="manual-delay-display">+ 0 ms</div>
+            <div class="calibrate-button-container">
+                <div id="faster-button" class="calibrate-button">
+                    <div id="faster-arrow"></div>
+                </div>
+                <div>+ 1</div>
+            </div>
+            <div class="calibrate-button-container">
+                <div id="way-faster-button" class="calibrate-button">
+                    <div id="faster-arrow"></div>
+                </div>
+                <div>+ 25</div>
+            </div>
+        </div>
+        <br>
+        <div id="close-calibrator-button" class="tutorial-button">Done</div>
+    </div>
+    <div id="calibrate-curtain" class="hidden"></div>
+    <div id="calibrate-popup" class="tutorial-step hidden">
+        <div>
+            <div class="menu-title">Using headphones?</div>
+        </div>
+        <br>
+        <div>
+            It is recommended to manually calibrate lag before playing Beatburner, especially if you are
+            using headphones. This will only take a minute.
+        </div>
+        <br>
+        <div class="horizontal">
+            <div id="calibrate-now" class="tutorial-button">
+                Calibrate
+            </div>
+            <div id="skip-calibrate" class="tutorial-button">
+                Skip
+            </div>
+        </div>
+    </div>
+    <div id="big-calibrate-popup" class="tutorial-step hidden">
+        <div>
+            <div class="menu-title">Sound effects off</div>
+        </div>
+        <br>
+        <div>
+            Because you've indicated a large amount of audio/visual lag, missed
+            note effects are automatically turned off. You can turn them back on
+            at any time in the settings menu.
+        </div>
+        <br>
+        
+        <div id="ok-big-calibrate" class="tutorial-button">
+            OK
+        </div>
+        
+    </div>
+    
+    <script type="text/javascript" src="./main.js"></script>
+</body>
+</html>

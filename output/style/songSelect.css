@@ -1,0 +1,130 @@
+.menu-sub-title {
+    font-size: 2vh;
+    color: rgb(0, 107, 0);
+    padding: 1vh;
+}
+
+.inset-text {
+    width: 100%;
+    border-top: 0.25vh solid rgb(145, 255, 151);
+    border-left: 0.25vh solid rgb(145, 255, 151);
+    border-bottom: 0.25vh solid rgb(212, 255, 215);
+    border-right: 0.25vh solid rgb(212, 255, 215);
+    background-color: white;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: 50vh;
+}
+
+.inset-blue {
+    width: 100%;
+    border-top: 0.25vh solid rgb(145, 224, 255);
+    border-left: 0.25vh solid rgb(145, 224, 255);
+    border-bottom: 0.25vh solid rgb(212, 238, 255);
+    border-right: 0.25vh solid rgb(212, 238, 255);
+    background-color: white;
+    box-sizing: border-box;
+    padding: 0.5vh;
+    font-size: 2vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.stage {
+    width: 100%;
+    color: gray;
+    font-family: sans-serif;
+    font-size: 2vh;
+}
+
+.stage-title {
+    padding: 0.5vh;
+    width: 100%;
+    background-color: lightgray;
+    box-sizing: border-box;
+}
+
+.song-title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.song-mark {
+    position: relative;
+    width: 4vh;
+    height: 2vh;
+    margin-left: 1vh;
+}
+.song-mark-left {
+    transform: translate(-2vh, 0vh);
+}
+
+.song-title {
+    text-align: left;
+    margin-left: 1vh;
+    padding-top: 0.75vh;
+    padding-bottom: 0.75vh;
+    cursor: pointer;
+    user-select: none;
+}
+
+.song-score {
+    color: rgb(0, 107, 0);
+    margin-left: 1vh;
+}
+
+.song-score-fail {
+    color: red;
+}
+
+.stage-locked {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.green-check {
+    position: absolute;
+    left: 25%;
+    top: 10%;
+    height: 0.75vh;
+    width: 2.5vh;
+    border-left: 0.25vh solid rgb(0, 107, 0);
+    border-bottom: 0.25vh solid rgb(0, 107, 0);
+    transform: rotate(-40deg);
+}
+
+.red-x-a {
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    height: 2vh;
+    width: 0.25vh;
+    background-color: red;
+    transform: rotate(45deg);
+}
+
+.red-x-b {
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    height: 2vh;
+    width: 0.25vh;
+    background-color: red;
+    transform: rotate(-45deg);
+}
+
+.percent-title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#song-information-bar {
+    font-size: 2vh;
+    width: 100%;
+    margin-top: 0.5vh;
+    text-align: center;
+}
