@@ -9,6 +9,7 @@ import {
 import {
     songData
 } from "../data.js";
+import { getSongData } from "./songCache.js";
 
 // // TEMP for local testing
 // import { rockIt } from "./rockItTonight.js";
@@ -30,8 +31,13 @@ export class Tutorial {
         this.releaseTime = 0;
         this.notesHit = 0;
         this.notesMissed = 0;
+        this.stepWidth = "50vw";
 
         this.activateTutorial();
+
+        setTimeout(() => {
+            this.activateDesktop();
+        }, 500);
 
         this.songNotes = [
             [2.46194, "slide-left"],
@@ -421,6 +427,25 @@ export class Tutorial {
         ];
     }
 
+    activateDesktop() {
+        if (!document.mobile) {
+            document.getElementById("tutorial-4-button").remove();
+            document.getElementById("tutorial-step-2").innerHTML = `
+            Your job is to hit the right key just as each note passes through
+            the light bar here.
+            <br>
+            <br>
+            <div id="tutorial-4-button" class="tutorial-button">Try it</div>
+            `;
+            document.getElementById("tutorial-4-button").addEventListener("click", () => {
+                document.getElementById("tutorial-step-2").classList.add("hidden");
+                document.getElementById("tutorial-step-1").classList.add("hidden");
+                this.triggerTutorialStep(4);
+            });
+            this.stepWidth = "40vh";
+        }
+    }
+
     activateTutorial() {
         // extended steps
         [10, 11, 12, 13].forEach((n) => {
@@ -506,9 +531,9 @@ export class Tutorial {
             stepTwo.style.top = "45vh";
             stepTwo.style.left = "2vh";
             stepTwo.classList.remove("hidden");
-            arrow.style.top = "65vh";
-            arrow.style.left = "65vw";
-            arrow.style.transform = "rotate(270deg)";
+            arrow.style.top = "67vh";
+            arrow.style.left = "50%";
+            arrow.style.transform = "rotate(270deg) translate(0vh, 15vh)";
             arrow.classList.remove("hidden");
         }
         if (n === 3) {
@@ -536,10 +561,8 @@ export class Tutorial {
             // this.discoAudio.setAttribute("src", "./effects/Buddha Kid - Share Love.m4a");
 
             // real
-            fetch("./songStrings/discoBeat.txt").then((res) => {
-                res.text().then((str) => {
-                    this.discoAudio.setAttribute("src", `data:audio/x-wav;base64,${str}`);
-                });
+            getSongData("discoBeat").then((str) => {
+                this.discoAudio.setAttribute("src", `data:audio/x-wav;base64,${str}`);
             });
             
             this.discoAudio.addEventListener("ended", () => {
@@ -585,7 +608,7 @@ export class Tutorial {
             const stepFive = document.getElementById("tutorial-step-5");
             stepFive.style.top = "2vh";
             stepFive.style.left = "40vw";
-            stepFive.style.width = "50vw";
+            stepFive.style.width = this.stepWidth;
             stepFive.classList.remove("hidden");
         }
         if (n === 6) {
@@ -636,17 +659,15 @@ export class Tutorial {
                 const stepSeven = document.getElementById("tutorial-step-7");
                 stepSeven.style.top = "20vh";
                 stepSeven.style.left = "2vh";
-                stepSeven.style.width = "60vw";
+                stepSeven.style.width = this.stepWidth;
                 stepSeven.classList.remove("hidden");
             });
             // fake for local testing
             // this.songAudio.setAttribute("src", "./effects/Buddha Kid - Share Love.m4a");
 
             // real
-            fetch("./songStrings/shareLove.txt").then((res) => {
-                res.text().then((str) => {
-                    this.songAudio.setAttribute("src", `data:audio/x-wav;base64,${str}`);
-                });
+            getSongData("shareLove").then((str) => {
+                this.songAudio.setAttribute("src", `data:audio/x-wav;base64,${str}`);
             });
         }
         if (n === 8) {
@@ -654,7 +675,7 @@ export class Tutorial {
             const stepEight = document.getElementById("tutorial-step-8");
             stepEight.style.top = "20vh";
             stepEight.style.left = "30vw";
-            stepEight.style.width = "55vw";
+            stepEight.style.width = this.stepWidth;
             stepEight.classList.remove("hidden");
             // arrow.style.top = "45vh";
             // arrow.style.left = "18vw";
@@ -717,7 +738,7 @@ export class Tutorial {
         }
     }
 
-    triggerNoteAttempt(hit) {
+    triggerNoteAttempt(hit, close = false) {
         const rockLabel = document.getElementById("rock-label");
         rockLabel.classList.add("static-rock");
         if (this.playingSong || this.playingRealSong) {
@@ -728,26 +749,16 @@ export class Tutorial {
             }
         }
         if (this.playing) {
-            const now = performance.now();
-            const diff = now - this.releaseTime;
             if (hit) {
                 rockLabel.innerHTML = "NICE!";
                 setTimeout(() => {
                     rockLabel.innerHTML = "";
                 }, 500);
-            } else {
-                if (diff < 1000 && diff > 750) {
-                    rockLabel.innerHTML = "bit <br> early";
-                    setTimeout(() => {
-                        rockLabel.innerHTML = "";
-                    }, 500);
-                }
-                if (diff > 0 && diff < 250) {
-                    rockLabel.innerHTML = "bit <br> late";
-                    setTimeout(() => {
-                        rockLabel.innerHTML = "";
-                    }, 500);
-                }
+            } else if (close) {
+                rockLabel.innerHTML = `bit <br> ${close}`;
+                setTimeout(() => {
+                    rockLabel.innerHTML = "";
+                }, 500);
             }
         }
     }
@@ -855,21 +866,19 @@ export class Tutorial {
         this.masterInfo.hideAllMenus();
         this.masterInfo.songMode = "demo";
         const songCode = "blahBlahBlah";
-        fetch(`./songStrings/${songCode}.txt`).then((res) => {
-            res.text().then((str) => {
-                this.masterInfo.currentSong = songData[songCode];
-                this.masterInfo.songCode = songCode;
-                this.animator.stopAnimation();
-                this.player.pause();
-                this.player.setSource(`data:audio/x-wav;base64,${str}`);
-                // this.player.setSource(`data:audio/x-wav;base64,${tone}`);
-                document.getElementById("song-label").innerText = this.masterInfo.currentSong;
-                killAllNotes(this.masterInfo, this.noteWriter);
-                setTimeout(() => {
-                    this.controlsManager.playFunction();
-                    stopLoading();
-                }, 100);
-            });
+        getSongData(songCode).then((str) => {
+            this.masterInfo.currentSong = songData[songCode];
+            this.masterInfo.songCode = songCode;
+            this.animator.stopAnimation();
+            this.player.pause();
+            this.player.setSource(`data:audio/x-wav;base64,${str}`);
+            // this.player.setSource(`data:audio/x-wav;base64,${tone}`);
+            document.getElementById("song-label").innerText = this.masterInfo.currentSong;
+            killAllNotes(this.masterInfo, this.noteWriter);
+            setTimeout(() => {
+                this.controlsManager.playFunction();
+                stopLoading();
+            }, 100);
         });
     }
 }

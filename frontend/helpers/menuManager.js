@@ -9,6 +9,7 @@ import {
     promptCalibration
 } from "./util.js";
 import { songData } from "../data.js";
+import { getSongData } from "./songCache.js";
 
 export class MenuManager {
     constructor(masterInfo, controlsManager, player, stationManager, streamPlayer, noteWriter, connector) {
@@ -278,20 +279,14 @@ export class MenuManager {
                 }
 
                 // if (this.masterInfo.defaultSong) {
-                    // fetch(`./songStrings/${this.masterInfo.defaultSong}.txt`).then((res) => {
-                    fetch(`./songStrings/${songToLoad}.txt`).then((res) => {
-                        res.text().then((str) => {
-                            this.masterInfo.currentSong = songData[songToLoad];
-                            this.masterInfo.songCode = songToLoad;
-                            this.player.pause();
-                            this.player.setSource(`data:audio/x-wav;base64,${str}`);
-                            showSongControlButton("button-play");
-                            document.getElementById("song-label").innerText = this.masterInfo.currentSong;
-                            killAllNotes(this.masterInfo, this.noteWriter);
-                            // this.masterInfo.defaultSong = null;
-
-                            // document.getElementById("song-label").innerText = "SWITCHED BY DEFAULT";
-                        });
+                    getSongData(songToLoad).then((str) => {
+                        this.masterInfo.currentSong = songData[songToLoad];
+                        this.masterInfo.songCode = songToLoad;
+                        this.player.pause();
+                        this.player.setSource(`data:audio/x-wav;base64,${str}`);
+                        showSongControlButton("button-play");
+                        document.getElementById("song-label").innerText = this.masterInfo.currentSong;
+                        killAllNotes(this.masterInfo, this.noteWriter);
                     });
                 // } else {
                 //     if (this.masterInfo.currentSong) {

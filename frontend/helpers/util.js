@@ -153,8 +153,11 @@ export function setUserProfile(profile) {
         //     key: "userProfile",
         //     value: JSON.stringify(profile)
         // }).then(() => {
-            resolve();
+            // resolve();
         // });
+
+        localStorage.setItem("beatburnerProfile", JSON.stringify(profile));
+        resolve();
     });
 }
 
@@ -166,11 +169,18 @@ export function getUserProfile() {
         //     if (profile) {
         //         resolve(JSON.parse(profile));
         //     } else {
-                resolve(defaultUserProfile);
+                // resolve(defaultUserProfile);
 
                
             // }
     //     });
+
+        const profile = localStorage.getItem("beatburnerProfile");
+        if (profile) {
+            resolve(JSON.parse(profile));
+        } else {
+            resolve(defaultUserProfile);
+        }
     });
 }
 

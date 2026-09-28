@@ -18,6 +18,7 @@ import {
     songStages,
     songData
 } from "../data.js";
+import { getSongData, prefetchSongData, getNextSongCode } from "./songCache.js";
 // import { App } from "@capacitor/app";
 
 export class ControlsManager {
@@ -36,6 +37,26 @@ export class ControlsManager {
         this.activateSlidesSelector((newVal) => {this.animator.setNumSlides(newVal)});
         this.activateSongControls();
         this.activateSongUpload();
+
+        this.playerOutfitted = false;
+
+        // setTimeout(() => {
+        //     if (!this.playerOutfitted) {
+        //         const ctx = new AudioContext();
+        //         const src = ctx.createMediaElementSource(this.player.song1);
+        //         src.connect(ctx.destination);
+        //         const analyzer = ctx.createAnalyser();
+        //         ctx.setSinkId({ type: "none" });
+        //         src.connect(analyzer);
+        //         analyzer.connect(ctx.destination);
+        //         analyzer.fftSize = 4096;
+        //         const arr = new Uint8Array(analyzer.frequencyBinCount);
+        //         this.player.detailedAnalyser = analyzer;
+        //         this.player.detailedDataArray = arr;
+    
+        //         this.playerOutfitted = true;
+        //     }
+        // }, 1000);
 
         // App.addListener("pause", () => {
         //     this.pauseFunction();
@@ -134,19 +155,15 @@ export class ControlsManager {
                             document.getElementById("main-menu").classList.remove("hidden");
                             document.getElementById("song-to-play").innerText = songData[songCode];
     
-                            // fetch(`./songStrings/ann.txt`).then((res) => {
-                            fetch(`./songStrings/${songCode}.txt`).then((res) => {
-                                res.text().then((str) => {
-                                    this.masterInfo.currentSong = songData[songCode];
-                                    this.masterInfo.songCode = songCode;
-                                    this.animator.stopAnimation();
-                                    this.player.pause();
-                                    this.player.setSource(`data:audio/x-wav;base64,${str}`);
-                                    showSongControlButton("button-play");
-                                    document.getElementById("song-label").innerText = this.masterInfo.currentSong;
-                                    killAllNotes(this.masterInfo, this.noteWriter);
-    
-                                });
+                            getSongData(songCode).then((str) => {
+                                this.masterInfo.currentSong = songData[songCode];
+                                this.masterInfo.songCode = songCode;
+                                this.animator.stopAnimation();
+                                this.player.pause();
+                                this.player.setSource(`data:audio/x-wav;base64,${str}`);
+                                showSongControlButton("button-play");
+                                document.getElementById("song-label").innerText = this.masterInfo.currentSong;
+                                killAllNotes(this.masterInfo, this.noteWriter);
                             });
                         });
                     }
@@ -165,12 +182,11 @@ export class ControlsManager {
                 document.getElementById("song-to-play").innerText = songData[defaultSong];
                 this.masterInfo.currentSong = songData[defaultSong];
             }
+            prefetchSongData(defaultSong);
         });
     }
 
     activateSongUpload() {
-
-        let playerOutfitted = false;
 
         document.getElementById("file-input").addEventListener("change", (e) => {
             this.player.pause();
@@ -198,21 +214,21 @@ export class ControlsManager {
                 if (fileNameArr.slice(fileNameArr.length - 4, fileNameArr.length).join("") === ".m4a") {
                     const newSongData = `data:audio/x-wav;base64,${str}`;
                     
-                    if (!playerOutfitted) {
-                        const ctx = new AudioContext();
-                        const src = ctx.createMediaElementSource(this.player.song1);
-                        src.connect(ctx.destination);
-                        const analyzer = ctx.createAnalyser();
-                        ctx.setSinkId({ type: "none" });
-                        src.connect(analyzer);
-                        analyzer.connect(ctx.destination);
-                        analyzer.fftSize = 4096;
-                        const arr = new Uint8Array(analyzer.frequencyBinCount);
-                        this.player.detailedAnalyser = analyzer;
-                        this.player.detailedDataArray = arr;
+                    // if (!this.playerOutfitted) {
+                    //     const ctx = new AudioContext();
+                    //     const src = ctx.createMediaElementSource(this.player.song1);
+                    //     src.connect(ctx.destination);
+                    //     const analyzer = ctx.createAnalyser();
+                    //     ctx.setSinkId({ type: "none" });
+                    //     src.connect(analyzer);
+                    //     analyzer.connect(ctx.destination);
+                    //     analyzer.fftSize = 4096;
+                    //     const arr = new Uint8Array(analyzer.frequencyBinCount);
+                    //     this.player.detailedAnalyser = analyzer;
+                    //     this.player.detailedDataArray = arr;
 
-                        playerOutfitted = true;
-                    }
+                    //     this.playerOutfitted = true;
+                    // }
 
 
                     this.animator.stopAnimation();
@@ -284,6 +300,7 @@ export class ControlsManager {
             if (this.masterInfo.songMode === "demo" && this.masterInfo.songCode) {
                 this.masterInfo.currentSong = songData[this.masterInfo.songCode];
                 document.getElementById("song-label").innerHTML = this.masterInfo.currentSong;
+                prefetchSongData(getNextSongCode(this.masterInfo.songCode));
             }
             this.player.start();
             this.animator.runAnimation({ player: this.player, algorithm: this.masterInfo.algorithm });
@@ -725,7 +742,7 @@ export class ControlsManager {
                     resolve();
                 });
             } else {
-                document.getElementById("game-container").requestFullscreen().then(() => {
+                document.documentElement.requestFullscreen().then(() => {
                     resolve();
                 });
             }

@@ -1,4 +1,5 @@
 import { songNotes } from "./songNotes.js";
+import { BeatTracker } from "./beatTracker.js";
 
 export class NoteWriter {
     constructor(masterInfo, addNote, makeTail, backgroundAnimator) {
@@ -28,9 +29,9 @@ export class NoteWriter {
 
         this.numToneVals = 3; // min; will shift off only if already above this number
         // this.recentToneVals = [80];
-        this.recentToneVals = [20, 50, 80];
+        // this.recentToneVals = [20, 50, 80];
         // this.recentToneVals = [20, 20, 20, 50, 50, 80, 80, 80];
-        // this.recentToneVals = [20, 20, 20, 50, 50, 80, 80, 80, 20, 20, 20, 50, 50, 80, 80, 80];
+        this.recentToneVals = [20, 20, 20, 50, 50, 80, 80, 80, 20, 20, 20, 50, 50, 80, 80, 80];
         // this.recentToneVals = [
         //     20, 20, 20, 50, 50, 80, 80, 80, 20, 20, 20, 50, 50, 80, 80, 80,
         //     20, 20, 20, 50, 50, 80, 80, 80, 20, 20, 20, 50, 50, 80, 80, 80,
@@ -52,6 +53,9 @@ export class NoteWriter {
 
         // EXPERIMENTAL
         this.gap = 200;
+
+        // algorithm "C": onset + beat tracking
+        this.beatTracker = new BeatTracker();
 
         this.resetData();
         // // DETAIL EXPERIMENT
@@ -86,6 +90,8 @@ export class NoteWriter {
     }
 
     resetData() {
+        this.beatTracker.reset();
+
         // DETAIL EXPERIMENT
         this.times = [];
         this.collectArrays = [];
@@ -355,24 +361,62 @@ export class NoteWriter {
         
     }
 
-    writeNotes(dataArray, timeArray, slideIds, notesPerSecond, songTime, timeOffset = 0) {
+    // Algorithm "C": spectral-flux onsets + tempo/beat grid + frequency-band lanes (see beatTracker.js).
+    // Doesn't use timeOffset: the tracker keeps its own clock and ignores the animator's duplicate sub-step frames.
+    writeNotesFromOnsets(dataArray, timeArray, slideIds, notesPerSecond) {
+        this.updateBackground(timeArray);
 
-        
-        
-        // show equalizer
-        // document.getElementById("equalizer").classList.remove("hidden");
-        // document.getElementById("equalizer").classList.add("equalizer");
-        // const box = document.getElementById("equalizer-box");
-        // const equArr = dataArray;
-        // box.innerHTML = "";
-        // equArr.forEach((ele) => {
-        //     const col = document.createElement("div");
-        //     col.classList.add("equ-col");
-        //     col.style.height = `${ele}px`;
-        //     box.appendChild(col);
-        // });
-        // return;
-        
+        const events = this.beatTracker.update(dataArray, performance.now(), {
+            level: notesPerSecond,
+            numLanes: slideIds.length,
+            manualDelayMs: this.masterInfo.manualDelay,
+            allowDouble: this.masterInfo.double
+        });
+
+        events.forEach((ev) => {
+            const params = {
+                slideIds: slideIds,
+                noteVal: ev.lane,
+                toneVal: 50,
+                addNote: this.addNote,
+                marked: false,
+                mobile: true,
+                notesPerSecond: notesPerSecond,
+                timeOffset: ev.timeOffsetMs
+            };
+            this.attemptNoteWrite(Object.assign({ slideToUse: slideIds[ev.lane], canDouble: false }, params));
+            if (ev.double !== null) {
+                this.attemptNoteWrite(Object.assign({ slideToUse: slideIds[ev.double], canDouble: true }, params));
+            }
+        });
+    }
+
+    // same background-colour input the other algorithms feed the backgroundAnimator
+    updateBackground(timeArray) {
+        const len = timeArray.length;
+        this.lastArrs.push([
+            Math.pow(arrAverage(timeArray.slice(len - 2048, len - 1536)), 1.5),
+            Math.pow(arrAverage(timeArray.slice(len - 1536, len - 1024)), 1.5),
+            Math.pow(arrAverage(timeArray.slice(len - 1024, len - 512)), 1.5),
+            Math.pow(arrAverage(timeArray.slice(len - 512, len - 256)), 1.5),
+            Math.max(...timeArray) - Math.min(...timeArray)
+        ]);
+        if (this.lastArrs.length > 8) {
+            this.lastArrs.shift();
+        }
+        const backArr = [];
+        for (let i = 0; i < 5; i++) {
+            backArr.push(arrAverage(this.lastArrs.map(sub => sub[i])));
+        }
+        this.backgroundAnimator.animateBackground(backArr);
+    }
+
+    writeNotes(dataArray, timeArray, slideIds, notesPerSecond, songTime, timeOffset = 0) {
+        if (this.masterInfo.algorithm === "C") {
+            this.writeNotesFromOnsets(dataArray, timeArray, slideIds, notesPerSecond);
+            return;
+        }
+
         const now = performance.now() - timeOffset;
         // if (now - this.lastTime > this.stepTime) {
             this.times.push(now);
@@ -393,12 +437,12 @@ export class NoteWriter {
             let canDouble = false;
             
             // FOR NO COLLECT ARRAY!!!!
-            const arrToUse = dataArray;
-            // const arrToUse = timeArray;
+            // const arrToUse = dataArray;
+            const arrToUse = timeArray;
 
             // TEMP 
             // const arrToUse = dataArray.map((ele, i) => {
-            //     return ele * timeArray[i];
+                // return ele * timeArray[i];
             // });
             // end TEMP
 
@@ -428,12 +472,6 @@ export class NoteWriter {
 
                 arrToUse.forEach((val, i) => {
                     if (val > 0) {
-
-                        // FOR higestFreqs
-                        // if (val > maxVal) {
-                        //     maxVal = val;
-                        //     maxValIdx = 0;
-                        // }
         
                         if (val > prev) {   // going up
                             if (dir === -1) {
@@ -476,15 +514,20 @@ export class NoteWriter {
                 this.tallestTowers.push(highPeaks);
                 
                 // get toneVal from average index diff between peaks
-                const peakSpots = highPeaks.map((peak) => {
-                    return peak[1];
+                const peakSpotObjs = highPeaks.map((peak) => {
+                    return {
+                        height: peak[0],
+                        idx: peak[1],
+                        width: peak[2]
+                    };
                 }).sort((a, b) => {
-                    if (a > b) {
+                    if (a.idx > b.idx) {
                         return 1;
                     } else {
                         return -1;
                     }
                 });
+                const peakSpots = peakSpotObjs.map(ele => ele.idx);
                 
                 let diffSum = 0;
                 for (let i = Math.floor(peakSpots.length / 5); i < peakSpots.length; i++) {
@@ -517,20 +560,20 @@ export class NoteWriter {
                 // combine previous 2 things into 1 loop through highPeaks
                 let tallestHeight = 0;
                 let tallestIdx = 0;
-                // let waveLength = 0;
+                let waveLength = 0;
                 highPeaks.forEach((peakPair) => {
                     if (peakPair[0] > tallestHeight) {
                         tallestHeight = peakPair[0];
                         tallestIdx = peakPair[1];
-                        // waveLength = peakPair[2];
+                        waveLength = peakPair[2];
                     }
                 });
 
                 // TALLEST (see AVERAGE above)
                 this.aveHillHeights.push(tallestHeight);  // COMMENTED TO REVERT TO average tower height instead of tallest
 
-                this.toneVals.push(aveDiff);
-                // this.toneVals.push(waveLength); // WAVELENGTH is for when using highest tower from timeArray
+                // this.toneVals.push(aveDiff);
+                this.toneVals.push(1 / waveLength); // WAVELENGTH is for when using highest tower from timeArray
 
                 this.tallestTowerIndices.push(tallestIdx);
 
@@ -588,7 +631,7 @@ export class NoteWriter {
                 //     }
                 // });
                 
-                let zoomInFactor = 4;
+                let zoomInFactor = 2;
                 if (this.masterInfo.algorithm === "B") {
                     zoomInFactor = 2;
                 }
@@ -756,8 +799,8 @@ export class NoteWriter {
                 })
                 noteValToUse = highIdx;
                 
-                // toneValToUse = this.toneVals[peakIdx + this.peakOffset]; // TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP
-                toneValToUse = this.tallestTowerIndices[peakIdx + this.peakOffset]; // TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP
+                toneValToUse = this.toneVals[peakIdx + this.peakOffset]; // TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP
+                // toneValToUse = this.tallestTowerIndices[peakIdx + this.peakOffset]; // TEMP TEMP TEMP TEMP TEMP TEMP TEMP TEMP
                 // if (this.rawArrs[peakIdx]) {
                 //     // toneValToUse = weightedAve(this.rawArrs[peakIdx].slice(0, 2048));
                 //     // average indices of top 10 
@@ -947,26 +990,7 @@ export class NoteWriter {
                 }
                 this.backgroundAnimator.animateBackground(backArrToUse);
 
-                // FOR highestFreqs
-                // const stepsEachSide = 30;
-                // if (this.rawArrs.length > 2 * stepsEachSide + 50) {
-                //     const littleArrToUse = this.rawArrs.slice(midIdx - stepsEachSide, midIdx + stepsEachSide);
-                //     let maxIdx = 0;
-                //     let maxVal = 0;
-                //     littleArrToUse.forEach((subArr, i) => {
-                //         const freqVal = subArr[highestPeakIdx];
-                //         if (freqVal > maxVal) {
-                //             maxVal = freqVal;
-                //             maxIdx = i;
-                //         }
-                //     });
-                //     if (maxIdx === Math.floor(littleArrToUse.length / 2)) {
-                //         marked = true;
-                //         makeNote = true;
-                //     } else {
-                //         makeNote = false;
-                //     }
-                // }
+                
                 
                 if (soundAmt < 15) {
                     return;
@@ -1009,13 +1033,38 @@ export class NoteWriter {
                     }
                 }
             }
+
+            // FROM ChatGPT
+            let slideFromChatGPT;
+            if (this.rawArrs) {
+                makeNote = shouldTriggerNote({
+                    frames: this.rawArrs,
+                    mode: "time", // "time" or "frequency"
+                    // lookback = 5,       // frames before center
+                    lookback: 50,
+                    // threshold = 1.5     // sensitivity
+                    threshold: 1.0001
+                });
+                slideFromChatGPT = [
+                    "slide-left",
+                    "slide-a",
+                    "slide-b",
+                    "slide-right"
+                ][determineLane({
+                    frames: this.rawArrs,
+                    mode: "frequency"
+                })];
+            }
+                
+            // END ChatGPT
             
+            // makeNote = false;
             if (makeNote) {
                 
                 const slideToRequest = this.getSlideToUse(toneValToUse, slideIds.length);
                 
                 this.attemptNoteWrite({
-                    slideToUse: slideToRequest,
+                    slideToUse: slideFromChatGPT ? slideFromChatGPT : slideToRequest,
                     slideIds: slideIds,
                     noteVal: noteValToUse,
                     // noteVal: toneValToUse,
@@ -1042,18 +1091,18 @@ export class NoteWriter {
             }
         });
 
-        if (this.recentToneVals.length === 3 && numSlides === 4) {
-            if (toneVal < this.recentToneVals[0]) {
-                return "slide-left";
-            }
-            if (toneVal < this.recentToneVals[1]) {
-                return "slide-a";
-            }
-            if (toneVal < this.recentToneVals[2]) {
-                return "slide-b";
-            }
-            return "slide-right";
-        }
+        // if (this.recentToneVals.length === 3 && numSlides === 4) {
+        //     if (toneVal < this.recentToneVals[0]) {
+        //         return "slide-left";
+        //     }
+        //     if (toneVal < this.recentToneVals[1]) {
+        //         return "slide-a";
+        //     }
+        //     if (toneVal < this.recentToneVals[2]) {
+        //         return "slide-b";
+        //     }
+        //     return "slide-right";
+        // }
 
         // TEMP
         // const left = document.notesRecord["slide-left"];
@@ -1443,4 +1492,122 @@ function arrVariance(arr) {
     } else {
         return 1.0 * sum / arr.length;
     }
+}
+
+// ChatGPT helpers
+function rms(frame) {
+    let sum = 0;
+    for (let i = 0; i < frame.length; i++) {
+        const v = frame[i];
+        sum += v * v;
+    }
+    return Math.sqrt(sum / frame.length);
+}
+
+function spectralFlux(curr, prev) {
+    let flux = 0;
+    for (let i = 0; i < curr.length; i++) {
+        const diff = curr[i] - prev[i];
+        if (diff > 0) flux += diff;
+    }
+    return flux;
+}
+
+function shouldTriggerNote({
+    frames,
+    mode = "frequency", // "time" or "frequency"
+    lookback = 5,       // frames before center
+    threshold = 1.5     // sensitivity
+}) {
+    const center = Math.floor(frames.length / 2);
+  
+    if (center < lookback + 1) return false;
+  
+    let centerValue = 0;
+    let avgPast = 0;
+  
+    if (mode === "time") {
+        // RMS energy
+        centerValue = rms(frames[center]);
+    
+        for (let i = center - lookback; i < center; i++) {
+            avgPast += rms(frames[i]);
+        }
+        avgPast /= lookback;
+  
+    } else {
+        // Spectral flux
+        centerValue = spectralFlux(
+            frames[center],
+            frames[center - 1]
+        );
+    
+        for (let i = center - lookback; i < center; i++) {
+            avgPast += spectralFlux(frames[i], frames[i - 1]);
+        }
+        avgPast /= lookback;
+    }
+    // Is this a significant jump?
+    return centerValue > avgPast * threshold;
+}
+
+function bandEnergy(frame, start, end) {
+    let sum = 0;
+    for (let i = start; i < end; i++) {
+        sum += frame[i];
+    }
+    return sum;
+}
+
+function determineLane({
+    frames,
+    lookback = 4
+  }) {
+    const center = Math.floor(frames.length / 2);
+    if (center < lookback + 1) return null;
+  
+    const bins = frames[center].length;
+  
+    // 4 equal frequency bands (log bands can come later)
+    const bands = [
+        [0, Math.floor(bins * 0.15)],   // bass
+        [Math.floor(bins * 0.15), Math.floor(bins * 0.35)],
+        [Math.floor(bins * 0.35), Math.floor(bins * 0.65)],
+        [Math.floor(bins * 0.65), bins] // treble
+    ];
+  
+    const centerEnergies = bands.map(
+        ([a, b]) => bandEnergy(frames[center], a, b)
+    );
+  
+    // Average past energies for normalization
+    const pastEnergies = new Array(4).fill(0);
+  
+    for (let f = center - lookback; f < center; f++) {
+        bands.forEach(([a, b], i) => {
+            pastEnergies[i] += bandEnergy(frames[f], a, b);
+        });
+    }
+  
+    for (let i = 0; i < 4; i++) {
+        pastEnergies[i] /= lookback;
+    }
+  
+    // Compute relative increase (onset strength per band)
+    let bestLane = 0;
+    let bestScore = -Infinity;
+  
+    for (let i = 0; i < 4; i++) {
+        const score =
+            (centerEnergies[i] - pastEnergies[i]) /
+            (pastEnergies[i] + 1); // avoid divide by zero
+    
+        if (score > bestScore) {
+            bestScore = score;
+            bestLane = i;
+        }
+    }
+  
+    // Return lanes 1–4
+    return bestLane;
 }

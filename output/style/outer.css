@@ -1,0 +1,23 @@
+.outer-options {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.outer-option {
+    width: 70vw;
+    font-size: 6vh;
+    background-color: black;
+    border: 1vh outset gray;
+    margin-bottom: 5vh;
+    color: lightgray;
+    font-family: sans-serif;
+    padding: 2vh;
+    cursor: pointer;
+}

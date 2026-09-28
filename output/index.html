@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beat Burner</title>
     <link rel="stylesheet" href="style/styleReset.css">
+    <link rel="stylesheet" href="style/outer.css">
     <link rel="stylesheet" href="style/style.css">
     <link id="background-css" rel="stylesheet" href="style/background.css">
     <link rel="stylesheet" href="style/menu.css">
@@ -22,8 +23,15 @@
 </head>
 <body>
     <center>
+        
         <div id="game-container" class="game-container">
-            <div id="start-curtain"><br><br><br><br><br>Beatburner</div>
+            <div id="start-curtain">
+                <div class="outer-options">
+                    <div id="outer-play" class="outer-option">
+                        Enter game
+                    </div>
+                </div>
+            </div>
             <div id="message-modal" class="menu hidden">
                 <div id="message-content">
                     Here is a message
@@ -404,10 +412,13 @@
                             <select id="algorithm-selector" class="select">
                                 <option value="A" selected>A</option>
                                 <option value="B">B</option>
+                                <option value="C">C (beat tracking)</option>
                             </select>
                             <br>
                             Algorithm B will generate more dynamic note patterns and usually more notes. Algorithm A will
-                            be closer to a steady beat.
+                            be closer to a steady beat. Algorithm C (experimental) detects drum hits and note attacks, finds
+                            the tempo, and puts notes on the beat; low sounds go to the left lanes and high sounds to the
+                            right. It doesn't make sustained notes yet.
                         </div>
                     </div>
                     <div class="settings-item">
@@ -804,8 +815,6 @@
                         <div class="hamburger-rectangle"></div>
                         <div class="hamburger-rectangle"></div>
                     </div>
-                </div>
-                <div id="controls-top-left" class="controls-top-left">
                     <div id="show-settings" class="control-button-bottom">
                         <div id="teeth1" class="gear-teeth"></div>
                         <div id="teeth2" class="gear-teeth"></div>
@@ -824,6 +833,26 @@
                         <div id="trophy-handle-top"></div>
                         <div id="trophy-handle-bottom"></div>
                     </div>
+                </div>
+                <div id="controls-top-left" class="controls-top-left">
+                    <!-- <div id="show-settings" class="control-button-bottom">
+                        <div id="teeth1" class="gear-teeth"></div>
+                        <div id="teeth2" class="gear-teeth"></div>
+                        <div id="teeth3" class="gear-teeth"></div>
+                        <div id="teeth4" class="gear-teeth"></div>
+                        <div id="teeth5" class="gear-teeth"></div>
+                        <div id="outer-gear-circle"></div>
+                        <div id="inner-gear-circle"></div>
+                    </div>
+                    <div id="show-stats" class="control-button-bottom">
+                        <div id="trophy-base-bottom"></div>
+                        <div id="trophy-base-top"></div>
+                        <div id="trophy-stem"></div>
+                        <div id="trophy-cup-right"></div>
+                        <div id="trophy-cup-left"></div>
+                        <div id="trophy-handle-top"></div>
+                        <div id="trophy-handle-bottom"></div>
+                    </div> -->
                 </div>
                 <!-- <div id="controls-left">
                     <div id="button-restart" class="control-button">
@@ -863,7 +892,7 @@
     <div id="perfect-container" class="perfect-container">
         <div id="perfect" class="perfect hidden">perfect</div>
     </div>
-    <div id="streak-container" class="streak-container streak-container-3">
+    <div id="streak-container" class="streak-container streak-container-3 hidden">
         <div id="streak-label" class="streak-label">STREAK</div>
         <div id="streak-number" class="streak-number">55</div>
     </div>
@@ -949,7 +978,7 @@
         </div>
     </div>
     <div id="calibrator" class="tutorial-step hidden">
-        <div>
+        <div class="info-text">
             Adjust visual/audio delay until the pings match the flashes.
         </div>
         <div id="flashy-thing-container">
@@ -986,7 +1015,9 @@
             </div>
         </div>
         <br>
-        <div id="close-calibrator-button" class="tutorial-button">Done</div>
+        <div class="horizontal">
+            <div id="close-calibrator-button" class="tutorial-button">Done</div>
+        </div>
     </div>
     <div id="calibrate-curtain" class="hidden"></div>
     <div id="calibrate-popup" class="tutorial-step hidden">
@@ -1023,9 +1054,15 @@
         <div id="ok-big-calibrate" class="tutorial-button">
             OK
         </div>
-        
+
     </div>
-    
-    <script type="text/javascript" src="./main.js"></script>
+    <div id="enter-fullscreen-button" class="control-button-bottom hidden">
+        <div class="fullscreen-corner fullscreen-corner-tl"></div>
+        <div class="fullscreen-corner fullscreen-corner-tr"></div>
+        <div class="fullscreen-corner fullscreen-corner-bl"></div>
+        <div class="fullscreen-corner fullscreen-corner-br"></div>
+    </div>
+
+    <script type="text/javascript" src="./main.js?v=20260921"></script>
 </body>
 </html>

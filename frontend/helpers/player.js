@@ -46,6 +46,8 @@ export class Player {
         this.waiting = false;
         this.countdownCanceled = false;
 
+        this.playerOutfitted = false;
+
         // NOTE - this stuff is set either in controlsManager or mp3Player
         // const detailedAudioCtx = new AudioContext();
 
@@ -53,7 +55,7 @@ export class Player {
         // detailedAudioSource.connect(detailedAudioCtx.destination); // temp?
         // this.detailedAnalyser = detailedAudioCtx.createAnalyser();
         // detailedAudioSource.connect(this.detailedAnalyser);
-        // // detailedAudioCtx.setSinkId({ type: "none" });
+        // detailedAudioCtx.setSinkId({ type: "none" });
         // this.detailedAnalyser.connect(detailedAudioCtx.destination);
         // // this.detailedAnalyser.smoothingTimeConstant = 0;
         // this.detailedAnalyser.fftSize = 4096;
@@ -272,6 +274,21 @@ export class Player {
             this.song1.setAttribute("src", songData);
             this.song2.setAttribute("src", songData);
             this.masterInfo.songAtStart = true;
+            if (!this.playerOutfitted) {
+                const ctx = new AudioContext();
+                const src = ctx.createMediaElementSource(this.song1);
+                src.connect(ctx.destination);
+                const analyzer = ctx.createAnalyser();
+                ctx.setSinkId({ type: "none" });
+                src.connect(analyzer);
+                analyzer.connect(ctx.destination);
+                analyzer.fftSize = 4096;
+                const arr = new Uint8Array(analyzer.frequencyBinCount);
+                this.detailedAnalyser = analyzer;
+                this.detailedDataArray = arr;
+
+                this.playerOutfitted = true;
+            }
         }
     }
 

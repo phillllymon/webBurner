@@ -622,3 +622,41 @@
     width: 1px;
     background-color: blue;
 }
+
+#enter-fullscreen-button {
+    position: fixed;
+    top: 2vh;
+    right: 2vh;
+    z-index: 1002;
+}
+
+.fullscreen-corner {
+    position: absolute;
+    width: 1.2vh;
+    height: 1.2vh;
+    border: 0.35vh solid gray;
+}
+.fullscreen-corner-tl {
+    top: 0.3vh;
+    left: 0.3vh;
+    border-right: none;
+    border-bottom: none;
+}
+.fullscreen-corner-tr {
+    top: 0.3vh;
+    right: 0.3vh;
+    border-left: none;
+    border-bottom: none;
+}
+.fullscreen-corner-bl {
+    bottom: 0.3vh;
+    left: 0.3vh;
+    border-right: none;
+    border-top: none;
+}
+.fullscreen-corner-br {
+    bottom: 0.3vh;
+    right: 0.3vh;
+    border-left: none;
+    border-top: none;
+}
