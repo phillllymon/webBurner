@@ -1034,37 +1034,12 @@ export class NoteWriter {
                 }
             }
 
-            // FROM ChatGPT
-            let slideFromChatGPT;
-            if (this.rawArrs) {
-                makeNote = shouldTriggerNote({
-                    frames: this.rawArrs,
-                    mode: "time", // "time" or "frequency"
-                    // lookback = 5,       // frames before center
-                    lookback: 50,
-                    // threshold = 1.5     // sensitivity
-                    threshold: 1.0001
-                });
-                slideFromChatGPT = [
-                    "slide-left",
-                    "slide-a",
-                    "slide-b",
-                    "slide-right"
-                ][determineLane({
-                    frames: this.rawArrs,
-                    mode: "frequency"
-                })];
-            }
-                
-            // END ChatGPT
-            
-            // makeNote = false;
             if (makeNote) {
-                
+
                 const slideToRequest = this.getSlideToUse(toneValToUse, slideIds.length);
-                
+
                 this.attemptNoteWrite({
-                    slideToUse: slideFromChatGPT ? slideFromChatGPT : slideToRequest,
+                    slideToUse: slideToRequest,
                     slideIds: slideIds,
                     noteVal: noteValToUse,
                     // noteVal: toneValToUse,
@@ -1492,122 +1467,4 @@ function arrVariance(arr) {
     } else {
         return 1.0 * sum / arr.length;
     }
-}
-
-// ChatGPT helpers
-function rms(frame) {
-    let sum = 0;
-    for (let i = 0; i < frame.length; i++) {
-        const v = frame[i];
-        sum += v * v;
-    }
-    return Math.sqrt(sum / frame.length);
-}
-
-function spectralFlux(curr, prev) {
-    let flux = 0;
-    for (let i = 0; i < curr.length; i++) {
-        const diff = curr[i] - prev[i];
-        if (diff > 0) flux += diff;
-    }
-    return flux;
-}
-
-function shouldTriggerNote({
-    frames,
-    mode = "frequency", // "time" or "frequency"
-    lookback = 5,       // frames before center
-    threshold = 1.5     // sensitivity
-}) {
-    const center = Math.floor(frames.length / 2);
-  
-    if (center < lookback + 1) return false;
-  
-    let centerValue = 0;
-    let avgPast = 0;
-  
-    if (mode === "time") {
-        // RMS energy
-        centerValue = rms(frames[center]);
-    
-        for (let i = center - lookback; i < center; i++) {
-            avgPast += rms(frames[i]);
-        }
-        avgPast /= lookback;
-  
-    } else {
-        // Spectral flux
-        centerValue = spectralFlux(
-            frames[center],
-            frames[center - 1]
-        );
-    
-        for (let i = center - lookback; i < center; i++) {
-            avgPast += spectralFlux(frames[i], frames[i - 1]);
-        }
-        avgPast /= lookback;
-    }
-    // Is this a significant jump?
-    return centerValue > avgPast * threshold;
-}
-
-function bandEnergy(frame, start, end) {
-    let sum = 0;
-    for (let i = start; i < end; i++) {
-        sum += frame[i];
-    }
-    return sum;
-}
-
-function determineLane({
-    frames,
-    lookback = 4
-  }) {
-    const center = Math.floor(frames.length / 2);
-    if (center < lookback + 1) return null;
-  
-    const bins = frames[center].length;
-  
-    // 4 equal frequency bands (log bands can come later)
-    const bands = [
-        [0, Math.floor(bins * 0.15)],   // bass
-        [Math.floor(bins * 0.15), Math.floor(bins * 0.35)],
-        [Math.floor(bins * 0.35), Math.floor(bins * 0.65)],
-        [Math.floor(bins * 0.65), bins] // treble
-    ];
-  
-    const centerEnergies = bands.map(
-        ([a, b]) => bandEnergy(frames[center], a, b)
-    );
-  
-    // Average past energies for normalization
-    const pastEnergies = new Array(4).fill(0);
-  
-    for (let f = center - lookback; f < center; f++) {
-        bands.forEach(([a, b], i) => {
-            pastEnergies[i] += bandEnergy(frames[f], a, b);
-        });
-    }
-  
-    for (let i = 0; i < 4; i++) {
-        pastEnergies[i] /= lookback;
-    }
-  
-    // Compute relative increase (onset strength per band)
-    let bestLane = 0;
-    let bestScore = -Infinity;
-  
-    for (let i = 0; i < 4; i++) {
-        const score =
-            (centerEnergies[i] - pastEnergies[i]) /
-            (pastEnergies[i] + 1); // avoid divide by zero
-    
-        if (score > bestScore) {
-            bestScore = score;
-            bestLane = i;
-        }
-    }
-  
-    // Return lanes 1–4
-    return bestLane;
 }

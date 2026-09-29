@@ -29,24 +29,32 @@ export function removeElementClass(elementId, newClass) {
 }
 
 export function detectMobile() {
+    // got this from https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
+    const toMatch = [
+        /Android/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i
+    ];
+
+    // checked first: navigator.userAgentData.mobile reports false for tablets
+    // (Chrome's UA-CH spec treats them as non-mobile form factor), which would
+    // otherwise skip this broader check that already treats Android/iPad as mobile
+    const uaMatch = toMatch.some((toMatchItem) => {
+        return navigator.userAgent.match(toMatchItem);
+    });
+    if (uaMatch) {
+        return true;
+    }
+
     if (navigator.userAgentData) {
         return navigator.userAgentData.mobile;
-    } else {
-        // got this from https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
-        const toMatch = [
-            /Android/i,
-            /webOS/i,
-            /iPhone/i,
-            /iPad/i,
-            /iPod/i,
-            /BlackBerry/i,
-            /Windows Phone/i
-        ];
-        
-        return toMatch.some((toMatchItem) => {
-            return navigator.userAgent.match(toMatchItem);
-        }); 
     }
+
+    return false;
 }
 
 export function showSongControlButton(buttonId) {
@@ -196,7 +204,7 @@ const defaultUserProfile = {
     // autoCalibrating: true,
     // animations: true,
     // effects: true,
-    algorithm: "A",
+    algorithm: "C",
     lastMessage: 0,
     queryStats: true,
     queryInitial: true,

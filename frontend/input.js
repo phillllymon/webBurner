@@ -204,7 +204,7 @@ function main() {
         "tapper-right": false
     }
 
-    let algorithm = "A";
+    let algorithm = "C";
     let autoCalibrating = true;
     let sustainedNotes = true;
     let animatedBackground = true;
